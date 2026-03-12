@@ -2072,12 +2072,18 @@
   // Re-scale on resize
   window.addEventListener('resize', updatePreviewScale);
 
-  // Auto-fit on page load
+  // Auto-fit on page load; support ?template=name URL param
   window.addEventListener('load', () => {
-    // Small delay to let fonts load
     setTimeout(() => {
-      autoFitTemplate('hero');
-      updatePreviewScale();
+      const params = new URLSearchParams(window.location.search);
+      const tpl = params.get('template');
+      if (tpl && templates.includes(tpl)) {
+        const btn = document.querySelector(`.template-buttons button[onclick*="'${tpl}'"]`);
+        showTemplate(tpl, btn);
+      } else {
+        autoFitTemplate('hero');
+        updatePreviewScale();
+      }
     }, 200);
   });
 </script>
