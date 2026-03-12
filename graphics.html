@@ -35,70 +35,128 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
 
   body {
     font-family: var(--font-sans);
-    background: #18181b;
+    background: var(--surface-0);
     color: var(--foreground);
-    padding: 40px;
-    min-height: 100vh;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* ===== TWO-PANEL LAYOUT ===== */
+  .panel-left {
+    width: 380px;
+    min-width: 380px;
+    height: 100vh;
+    background: var(--surface-1);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .panel-left-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .panel-left-header h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 12px;
+  }
+
+  .panel-left-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  .panel-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    position: relative;
+    background: var(--surface-0);
+  }
+
+  /* Checkerboard-style subtle bg to frame the graphic */
+  .panel-right::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+  }
+
+  .preview-container {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .size-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.05em;
   }
 
   .controls {
-    max-width: 800px;
-    margin: 0 auto 40px;
-    background: var(--surface-1);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 24px;
-  }
-
-  .controls h1 {
-    font-size: 20px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    color: var(--foreground);
+    width: 100%;
   }
 
   .control-row {
     display: flex;
-    gap: 16px;
-    margin-bottom: 16px;
+    gap: 12px;
+    margin-bottom: 12px;
     flex-wrap: wrap;
   }
 
   .control-group {
     flex: 1;
-    min-width: 200px;
+    min-width: 140px;
   }
 
   .control-group label {
     display: block;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--muted-light);
-    margin-bottom: 6px;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 5px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
 
   .control-group input,
   .control-group select,
   .control-group textarea {
     width: 100%;
-    padding: 10px 14px;
+    padding: 8px 12px;
     background: var(--surface-0);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--foreground);
     font-family: var(--font-sans);
-    font-size: 14px;
+    font-size: 13px;
     outline: none;
   }
 
   .control-group textarea {
     resize: vertical;
-    min-height: 60px;
+    min-height: 48px;
   }
 
   .control-group input:focus,
@@ -109,19 +167,18 @@
 
   .template-buttons {
     display: flex;
-    gap: 8px;
+    gap: 5px;
     flex-wrap: wrap;
-    margin-bottom: 16px;
   }
 
   .template-buttons button {
-    padding: 8px 16px;
+    padding: 5px 10px;
     background: var(--surface-3);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 6px;
     color: var(--muted-light);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: 11px;
     cursor: pointer;
     transition: all 0.15s;
   }
@@ -133,12 +190,19 @@
     color: white;
   }
 
-  /* Canvas area */
+  /* Canvas wrapper -- sized by JS to match scaled graphic */
   .canvas-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Action buttons pinned to bottom of left panel */
+  .panel-left-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
     display: flex;
-    justify-content: center;
-    padding: 40px 0;
-    overflow: visible;
+    gap: 8px;
+    flex-shrink: 0;
   }
 
   /* ========================================
@@ -155,12 +219,9 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Scale down for preview -- compensate layout space */
+  /* Scale handled by JS updatePreviewScale() */
   .preview-scale {
-    transform: scale(0.55);
     transform-origin: top left;
-    margin-right: -486px;   /* 1080 - (1080*0.55) */
-    margin-bottom: -486px;
   }
 
   /* Shared: logo + URL pinned top/bottom at matching distance */
@@ -588,20 +649,12 @@
   }
 
 
-  /* Banner preview: scale down 1500x500 → 750x250 for UI display */
-  .preview-scale-banner-tw {
-    transform: scale(0.5);
+  /* Banner/profile preview scales handled dynamically by JS */
+  .preview-scale-banner-tw,
+  .preview-scale-banner-li,
+  .preview-scale-banner-wb,
+  .preview-scale-profile {
     transform-origin: top left;
-    margin-right: -750px;
-    margin-bottom: -250px;
-  }
-
-  /* LinkedIn preview: scale down 1584x396 → 792x198 */
-  .preview-scale-banner-li {
-    transform: scale(0.5);
-    transform-origin: top left;
-    margin-right: -792px;
-    margin-bottom: -198px;
   }
 
   /* Banner: 3-row layout fills the full horizontal space */
@@ -730,14 +783,6 @@
     flex-shrink: 0;
   }
 
-  /* Web banner preview: scale down 1500x300 → 750x150 */
-  .preview-scale-banner-wb {
-    transform: scale(0.5);
-    transform-origin: top left;
-    margin-right: -750px;
-    margin-bottom: -150px;
-  }
-
   /* Web banner overrides (shorter: 300px vs 500px) */
   .graphic-banner-wb.tpl-banner { padding: 36px 100px; }
   .graphic-banner-wb .headline { font-size: 72px; }
@@ -752,23 +797,18 @@
   .graphic-banner-li .banner-tag { font-size: 14px; padding: 8px 20px; }
   .graphic-banner-li .banner-cta { font-size: 18px; padding: 14px 36px; }
 
-  /* Action buttons */
-  .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 16px;
-  }
-
+  /* Action buttons -- in panel footer */
   .action-btn {
-    padding: 12px 28px;
-    border-radius: 10px;
+    flex: 1;
+    padding: 9px 16px;
+    border-radius: 8px;
     font-family: var(--font-sans);
-    font-size: 15px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
     border: none;
+    white-space: nowrap;
   }
 
   .action-btn.primary {
@@ -804,13 +844,6 @@
     overflow: hidden;
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
-  }
-
-  .preview-scale-profile {
-    transform: scale(0.7);
-    transform-origin: top left;
-    margin-right: -120px;
-    margin-bottom: -120px;
   }
 
   .tpl-profile {
@@ -1003,45 +1036,43 @@
   /* Utility: hide in preview */
   .hidden { display: none !important; }
 
-  /* Instructions */
-  .instructions {
-    max-width: 800px;
-    margin: 0 auto 24px;
-    padding: 16px 24px;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    font-size: 14px;
-    color: var(--muted-light);
-    line-height: 1.6;
-  }
+  /* Instructions -- hidden in new layout, info is self-evident */
+  .instructions { display: none; }
+
+  /* Scrollbar */
+  .panel-left-body::-webkit-scrollbar { width: 4px; }
+  .panel-left-body::-webkit-scrollbar-track { background: transparent; }
+  .panel-left-body::-webkit-scrollbar-thumb { background: var(--surface-4); border-radius: 4px; }
+
+  /* Section dividers in controls */
+  .template-controls { padding-top: 4px; }
+  .template-controls .control-row:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
 
-<div class="instructions">
-  <strong style="color: var(--foreground);">How to use:</strong>
-  Pick a template, edit the fields, then screenshot the graphic below (Cmd+Shift+4 on Mac, drag over the graphic).
-  Square graphics are 1080x1080px (Instagram). Banner is 1500x500px (Twitter/LinkedIn). Both scaled down for preview.
-</div>
-
-<div class="controls">
+<!-- LEFT PANEL: Controls -->
+<div class="panel-left">
+<div class="panel-left-header">
   <h1>Clawoop Graphics</h1>
 
   <div class="template-buttons">
-    <button class="active" onclick="showTemplate('hero')">Hero Statement</button>
-    <button onclick="showTemplate('feature')">Feature Card</button>
-    <button onclick="showTemplate('stat')">Stat / Number</button>
-    <button onclick="showTemplate('quote')">Quote</button>
-    <button onclick="showTemplate('comparison')">Comparison</button>
-    <button onclick="showTemplate('terminal')">Terminal</button>
-    <button onclick="showTemplate('banner-tw')" style="border-color:var(--accent)">Twitter Banner</button>
-    <button onclick="showTemplate('banner-li')" style="border-color:var(--accent)">LinkedIn Banner</button>
-    <button onclick="showTemplate('banner-wb')" style="border-color:var(--accent)">Web Header</button>
-    <button onclick="showTemplate('trust')">Trust Levels</button>
-    <button onclick="showTemplate('ph')">Product Hunt</button>
-        <button onclick="showTemplate('profile')" style="border-color:var(--accent)">Profile Pic</button>
+    <button class="active" onclick="showTemplate('hero',this)">Hero</button>
+    <button onclick="showTemplate('feature',this)">Feature</button>
+    <button onclick="showTemplate('stat',this)">Stat</button>
+    <button onclick="showTemplate('quote',this)">Quote</button>
+    <button onclick="showTemplate('comparison',this)">Compare</button>
+    <button onclick="showTemplate('terminal',this)">Terminal</button>
+    <button onclick="showTemplate('banner-tw',this)">Twitter</button>
+    <button onclick="showTemplate('banner-li',this)">LinkedIn</button>
+    <button onclick="showTemplate('banner-wb',this)">Web Header</button>
+    <button onclick="showTemplate('trust',this)">Trust</button>
+    <button onclick="showTemplate('ph',this)">PH Launch</button>
+    <button onclick="showTemplate('profile',this)">Profile</button>
   </div>
+</div><!-- /panel-left-header -->
+<div class="panel-left-body">
+<div class="controls">
 
   <!-- Hero controls -->
   <div id="ctrl-hero" class="template-controls">
@@ -1532,22 +1563,20 @@
       </div>
     </div>
   </div>
-</div>
+</div><!-- /controls -->
+</div><!-- /panel-left-body -->
 
-<!-- ================================ -->
-<!-- ACTION BUTTONS                   -->
-<!-- ================================ -->
-
-<div class="action-buttons">
+<div class="panel-left-footer">
   <button class="action-btn primary" onclick="copyToClipboard()">Copy to clipboard</button>
   <button class="action-btn secondary" onclick="downloadPNG()">Download PNG</button>
 </div>
+</div><!-- /panel-left -->
 
-<!-- ================================ -->
-<!-- GRAPHIC CANVASES                 -->
-<!-- ================================ -->
-
-<div class="canvas-wrapper">
+<!-- RIGHT PANEL: Preview -->
+<div class="panel-right" id="panel-right">
+<div class="preview-container">
+  <div class="size-label" id="size-label">1080 x 1080</div>
+  <div class="canvas-wrapper">
 
   <!-- HERO -->
   <div id="graphic-hero" class="graphic tpl-hero preview-scale">
@@ -1738,7 +1767,9 @@
     </div>
   </div>
 
-</div>
+</div><!-- /canvas-wrapper -->
+</div><!-- /preview-container -->
+</div><!-- /panel-right -->
 
 <script>
   /* ==========================================
@@ -1877,7 +1908,7 @@
   const templates = ['hero', 'feature', 'stat', 'quote', 'comparison', 'terminal', 'banner-tw', 'banner-li', 'banner-wb', 'profile', 'trust', 'ph'];
   let currentTemplate = 'hero';
 
-  function showTemplate(name) {
+  function showTemplate(name, btn) {
     currentTemplate = name;
     templates.forEach(t => {
       document.getElementById('graphic-' + t).classList.add('hidden');
@@ -1885,12 +1916,15 @@
     });
     document.getElementById('graphic-' + name).classList.remove('hidden');
     document.getElementById('ctrl-' + name).classList.remove('hidden');
-    document.querySelectorAll('.template-buttons button').forEach(btn => {
-      btn.classList.remove('active');
+    document.querySelectorAll('.template-buttons button').forEach(b => {
+      b.classList.remove('active');
     });
-    event.target.classList.add('active');
-    // Auto-fit after template switch
-    requestAnimationFrame(() => autoFitTemplate(name));
+    if (btn) btn.classList.add('active');
+    // Auto-fit and rescale after template switch
+    requestAnimationFrame(() => {
+      autoFitTemplate(name);
+      updatePreviewScale();
+    });
   }
 
   // Update both banner variants simultaneously so content stays in sync
@@ -1934,9 +1968,17 @@
 
   async function captureGraphic() {
     const el = getActiveGraphic();
-    // Temporarily remove preview scale for full-res capture
-    const scaleClass = [...el.classList].find(c => c.startsWith('preview-scale'));
-    if (scaleClass) el.classList.remove(scaleClass);
+    const wrapper = document.querySelector('.canvas-wrapper');
+    // Save and remove preview transform for full-res capture
+    const savedTransform = el.style.transform;
+    const savedWW = wrapper ? wrapper.style.width : '';
+    const savedWH = wrapper ? wrapper.style.height : '';
+    el.style.transform = 'none';
+    if (wrapper) {
+      const [gw, gh] = graphicSizes[currentTemplate] || [1080, 1080];
+      wrapper.style.width = gw + 'px';
+      wrapper.style.height = gh + 'px';
+    }
 
     const canvas = await html2canvas(el, {
       scale: 1,
@@ -1945,7 +1987,12 @@
       backgroundColor: '#09090b',
     });
 
-    if (scaleClass) el.classList.add(scaleClass);
+    // Restore
+    el.style.transform = savedTransform;
+    if (wrapper) {
+      wrapper.style.width = savedWW;
+      wrapper.style.height = savedWH;
+    }
     return canvas;
   }
 
@@ -1982,10 +2029,56 @@
     setTimeout(() => { btn.textContent = 'Download PNG'; }, 2000);
   }
 
+  /* ==========================================
+     DYNAMIC PREVIEW SCALING
+     Scales the graphic to fit the right panel
+     ========================================== */
+
+  // Graphic native sizes by template
+  const graphicSizes = {
+    'hero': [1080, 1080], 'feature': [1080, 1080], 'stat': [1080, 1080],
+    'quote': [1080, 1080], 'comparison': [1080, 1080], 'terminal': [1080, 1080],
+    'trust': [1080, 1080], 'ph': [1080, 1080], 'profile': [400, 400],
+    'banner-tw': [1500, 500], 'banner-li': [1584, 396], 'banner-wb': [1500, 300],
+  };
+
+  function updatePreviewScale() {
+    const panel = document.getElementById('panel-right');
+    if (!panel) return;
+    const pw = panel.clientWidth - 60;
+    const ph = panel.clientHeight - 80;
+    const graphic = getActiveGraphic();
+    if (!graphic) return;
+
+    const [gw, gh] = graphicSizes[currentTemplate] || [1080, 1080];
+    const scale = Math.min(pw / gw, ph / gh, 1);
+
+    // Scale the graphic
+    graphic.style.transform = `scale(${scale})`;
+    graphic.style.transformOrigin = 'top left';
+
+    // Size the wrapper to the scaled dimensions so flexbox centers it properly
+    const wrapper = document.querySelector('.canvas-wrapper');
+    if (wrapper) {
+      wrapper.style.width = Math.round(gw * scale) + 'px';
+      wrapper.style.height = Math.round(gh * scale) + 'px';
+    }
+
+    // Update size label
+    const label = document.getElementById('size-label');
+    if (label) label.textContent = `${gw} x ${gh}`;
+  }
+
+  // Re-scale on resize
+  window.addEventListener('resize', updatePreviewScale);
+
   // Auto-fit on page load
   window.addEventListener('load', () => {
     // Small delay to let fonts load
-    setTimeout(() => autoFitTemplate('hero'), 200);
+    setTimeout(() => {
+      autoFitTemplate('hero');
+      updatePreviewScale();
+    }, 200);
   });
 </script>
 
