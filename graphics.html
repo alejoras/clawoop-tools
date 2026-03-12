@@ -2078,7 +2078,11 @@
       const params = new URLSearchParams(window.location.search);
       const tpl = params.get('template');
       if (tpl && templates.includes(tpl)) {
-        const btn = document.querySelector(`.template-buttons button[onclick*="'${tpl}'"]`);
+        // Find the matching button by iterating (more reliable than attribute selectors)
+        let btn = null;
+        document.querySelectorAll('.template-buttons button').forEach(b => {
+          if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'" + tpl + "'")) btn = b;
+        });
         showTemplate(tpl, btn);
       } else {
         autoFitTemplate('hero');
