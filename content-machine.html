@@ -96,16 +96,17 @@ body {
   color: var(--muted-l);
 }
 
-.persona-row {
+.role-row {
   display: flex;
   gap: 5px;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-.persona-btn {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
+.role-btn {
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 100px;
   border: 2px solid var(--border-l);
   background: var(--s3);
   cursor: pointer;
@@ -118,14 +119,16 @@ body {
   transition: all 0.15s;
   font-family: 'Inter', sans-serif;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.persona-btn:hover { background: var(--s4); color: var(--fg); }
+.role-btn:hover { background: var(--s4); color: var(--fg); }
 
-.persona-btn[data-p="alejo"].active  { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.1); }
-.persona-btn[data-p="deniz"].active  { border-color: #8b5cf6; color: #8b5cf6; background: rgba(139,92,246,0.1); }
-.persona-btn[data-p="won"].active    { border-color: #06b6d4; color: #06b6d4; background: rgba(6,182,212,0.1); }
-.persona-btn[data-p="thomas"].active { border-color: #ec4899; color: #ec4899; background: rgba(236,72,153,0.1); }
+.role-btn[data-r="marketing"].active { border-color: #f59e0b; color: #f59e0b; background: rgba(245,158,11,0.1); }
+.role-btn[data-r="founders"].active  { border-color: #8b5cf6; color: #8b5cf6; background: rgba(139,92,246,0.1); }
+.role-btn[data-r="devs"].active      { border-color: #06b6d4; color: #06b6d4; background: rgba(6,182,212,0.1); }
+.role-btn[data-r="designers"].active { border-color: #ec4899; color: #ec4899; background: rgba(236,72,153,0.1); }
+.role-btn[data-r="everyone"].active  { border-color: #6b7280; color: #9ca3af; background: rgba(107,114,128,0.1); }
 
 .sb-filters {
   padding: 10px 14px;
@@ -347,11 +350,11 @@ body {
   title: attr(title);
 }
 
-.p-dot[data-p="alejo"]  { background: rgba(245,158,11,0.15); color: #f59e0b; }
-.p-dot[data-p="deniz"]  { background: rgba(139,92,246,0.15); color: #a78bfa; }
-.p-dot[data-p="won"]    { background: rgba(6,182,212,0.15); color: #22d3ee; }
-.p-dot[data-p="thomas"] { background: rgba(236,72,153,0.15); color: #f472b6; }
-.p-dot[data-p="team"]   { background: rgba(107,114,128,0.15); color: #9ca3af; }
+.p-dot[data-r="marketing"] { background: rgba(245,158,11,0.15); color: #f59e0b; }
+.p-dot[data-r="founders"]  { background: rgba(139,92,246,0.15); color: #a78bfa; }
+.p-dot[data-r="devs"]      { background: rgba(6,182,212,0.15); color: #22d3ee; }
+.p-dot[data-r="designers"] { background: rgba(236,72,153,0.15); color: #f472b6; }
+.p-dot[data-r="everyone"]  { background: rgba(107,114,128,0.15); color: #9ca3af; }
 
 .card-hook {
   font-size: 13px;
@@ -700,46 +703,25 @@ body {
 </style>
 </head>
 <body>
-
-<!-- Tool Switcher Nav -->
-<nav class="tool-switcher">
-  <a href="index.html" class="ts-link ts-home" title="Home">&#8592;</a>
-  <a href="graphics.html" class="ts-link">Graphics</a>
-  <a href="content-machine.html" class="ts-link ts-active">Content</a>
-  <a href="launch-dashboard.html" class="ts-link">Launch</a>
-</nav>
-<style>
-.tool-switcher {
-  position: fixed; top: 12px; right: 16px; z-index: 9999;
-  display: flex; gap: 2px; align-items: center;
-  background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
-  padding: 3px; font-family: 'Inter', sans-serif;
-}
-.ts-link {
-  padding: 5px 12px; font-size: 12px; font-weight: 500;
-  color: #888; text-decoration: none; border-radius: 6px;
-  transition: color 0.15s, background 0.15s; white-space: nowrap;
-}
-.ts-link:hover { color: #ccc; background: rgba(255,255,255,0.06); }
-.ts-link.ts-active { color: #fff; background: rgba(54,103,166,0.25); }
-.ts-home { font-size: 14px; padding: 5px 8px; }
-</style>
+<script>
+if(location.hostname.indexOf('github.io')!==-1) document.addEventListener('DOMContentLoaded',function(){ document.querySelectorAll('[data-gh-src]').forEach(function(img){ img.src=img.getAttribute('data-gh-src'); }); });
+</script>
 
 <!-- Sidebar -->
 <aside id="sidebar">
   <div class="sb-logo">
-    <img class="sb-logo-img" src="../projects/ablo/assets/clawoop-logo.png" alt="Clawoop">
+    <img class="sb-logo-img" data-local-src="../projects/ablo/assets/clawoop-logo.png" data-gh-src="logo.png" src="../projects/ablo/assets/clawoop-logo.png" alt="Clawoop">
     <span class="sb-badge">Content Machine</span>
   </div>
 
   <div class="sb-section">
-    <div class="sb-label">You are</div>
-    <div class="persona-row">
-      <button class="persona-btn" data-p="alejo"  onclick="setUser('alejo')"  title="Alejo">A</button>
-      <button class="persona-btn" data-p="deniz"  onclick="setUser('deniz')"  title="Deniz">D</button>
-      <button class="persona-btn" data-p="won"    onclick="setUser('won')"    title="Won">W</button>
-      <button class="persona-btn" data-p="thomas" onclick="setUser('thomas')" title="Thomas">T</button>
+    <div class="sb-label">Your role</div>
+    <div class="role-row">
+      <button class="role-btn" data-r="marketing" onclick="setRole('marketing')" title="Marketing">Mktg</button>
+      <button class="role-btn" data-r="founders"  onclick="setRole('founders')"  title="Founders">Founders</button>
+      <button class="role-btn" data-r="devs"      onclick="setRole('devs')"      title="Developers">Devs</button>
+      <button class="role-btn" data-r="designers" onclick="setRole('designers')" title="Designers">Design</button>
+      <button class="role-btn" data-r="everyone"  onclick="setRole('everyone')"  title="Everyone">All</button>
     </div>
   </div>
 
@@ -776,14 +758,14 @@ body {
     </div>
 
     <div>
-      <div class="fg-label">Voice</div>
+      <div class="fg-label">Role</div>
       <div class="filter-opts">
-        <div class="fopt active" data-fk="persona" data-fv="all"    onclick="setFilter('persona','all')"><span class="fdot" style="background:#71717a"></span>All voices</div>
-        <div class="fopt"        data-fk="persona" data-fv="alejo"  onclick="setFilter('persona','alejo')"><span class="fdot" style="background:#f59e0b"></span>Alejo</div>
-        <div class="fopt"        data-fk="persona" data-fv="deniz"  onclick="setFilter('persona','deniz')"><span class="fdot" style="background:#8b5cf6"></span>Deniz</div>
-        <div class="fopt"        data-fk="persona" data-fv="won"    onclick="setFilter('persona','won')"><span class="fdot" style="background:#06b6d4"></span>Won</div>
-        <div class="fopt"        data-fk="persona" data-fv="thomas" onclick="setFilter('persona','thomas')"><span class="fdot" style="background:#ec4899"></span>Thomas</div>
-        <div class="fopt"        data-fk="persona" data-fv="team"   onclick="setFilter('persona','team')"><span class="fdot" style="background:#6b7280"></span>Team (any)</div>
+        <div class="fopt active" data-fk="role" data-fv="all"       onclick="setFilter('role','all')"><span class="fdot" style="background:#71717a"></span>All roles</div>
+        <div class="fopt"        data-fk="role" data-fv="marketing" onclick="setFilter('role','marketing')"><span class="fdot" style="background:#f59e0b"></span>Marketing</div>
+        <div class="fopt"        data-fk="role" data-fv="founders"  onclick="setFilter('role','founders')"><span class="fdot" style="background:#8b5cf6"></span>Founders</div>
+        <div class="fopt"        data-fk="role" data-fv="devs"      onclick="setFilter('role','devs')"><span class="fdot" style="background:#06b6d4"></span>Developers</div>
+        <div class="fopt"        data-fk="role" data-fv="designers" onclick="setFilter('role','designers')"><span class="fdot" style="background:#ec4899"></span>Designers</div>
+        <div class="fopt"        data-fk="role" data-fv="everyone"  onclick="setFilter('role','everyone')"><span class="fdot" style="background:#6b7280"></span>Everyone</div>
       </div>
     </div>
 
@@ -885,14 +867,14 @@ function p(t) { return t.trim(); }
 
 // ===== CONTENT DATA =====
 const PILLAR_LABELS = { 'speed': 'Speed', 'ai-acts': 'AI Acts', 'pricing': 'Pricing', 'templates': 'Templates', 'trust': 'Trust', 'launch': 'Launch' };
-const PERSONA_LABELS = { 'alejo': 'Alejo', 'deniz': 'Deniz', 'won': 'Won', 'thomas': 'Thomas', 'team': 'Team' };
-const PERSONA_INITIALS = { 'alejo': 'A', 'deniz': 'D', 'won': 'W', 'thomas': 'T', 'team': 'All' };
+const ROLE_LABELS = { 'marketing': 'Marketing', 'founders': 'Founders', 'devs': 'Developers', 'designers': 'Designers', 'everyone': 'Everyone' };
+const ROLE_INITIALS = { 'marketing': 'M', 'founders': 'F', 'devs': 'D', 'designers': 'Ds', 'everyone': '*' };
 
 const CONTENT = [
 
 // ─── SPEED PILLAR ───────────────────────────────────────────────────────────
 {
-  id: 'c001', persona: 'alejo', pillar: 'speed', platform: 'linkedin',
+  id: 'c001', role: 'marketing', pillar: 'speed', platform: 'linkedin',
   hook: 'Every marketer I know has the same workflow...',
   gh: 'The AI that actually does the work',
   body: p(`Every marketer I know has the same workflow:
@@ -916,7 +898,7 @@ If you're a solopreneur or small-team marketer who's tired of being the bottlene
 clawoop.com`)
 },
 {
-  id: 'c002', persona: 'alejo', pillar: 'speed', platform: 'twitter',
+  id: 'c002', role: 'marketing', pillar: 'speed', platform: 'twitter',
   hook: 'You\'re not building an automation. You\'re delegating a task.',
   gh: 'Delegating, not building',
   body: p(`You're not building an automation. You're delegating a task.
@@ -930,7 +912,7 @@ That's the whole thing.
 clawoop.com`)
 },
 {
-  id: 'c003', persona: 'deniz', pillar: 'speed', platform: 'twitter',
+  id: 'c003', role: 'devs', pillar: 'speed', platform: 'twitter',
   hook: 'We timed it. Most users run their first automation in under 5 minutes.',
   gh: 'Under 5 minutes to your first automation',
   body: p(`We timed it. Most users run their first Clawoop automation in under 5 minutes.
@@ -942,7 +924,7 @@ The hard part was building the AI. Getting started was supposed to be the easy p
 clawoop.com`)
 },
 {
-  id: 'c004', persona: 'deniz', pillar: 'speed', platform: 'linkedin',
+  id: 'c004', role: 'devs', pillar: 'speed', platform: 'linkedin',
   hook: 'The hardest engineering problem we solved wasn\'t the AI.',
   gh: 'We optimized for the first 5 minutes',
   body: p(`The hardest engineering problem we solved at Clawoop wasn't the AI.
@@ -960,7 +942,7 @@ Because a tool you never use isn't a tool. It's a subscription.
 clawoop.com`)
 },
 {
-  id: 'c005', persona: 'won', pillar: 'speed', platform: 'twitter',
+  id: 'c005', role: 'founders', pillar: 'speed', platform: 'twitter',
   hook: 'The tools that are hard to start never get used.',
   gh: 'Hard to start = never used',
   body: p(`The tools that are hard to start never get used.
@@ -972,7 +954,7 @@ Under 5 minutes. No credit card. No config.
 clawoop.com`)
 },
 {
-  id: 'c006', persona: 'won', pillar: 'speed', platform: 'linkedin',
+  id: 'c006', role: 'founders', pillar: 'speed', platform: 'linkedin',
   hook: 'The tools that are hard to start never get used.',
   gh: 'The onboarding is the product',
   body: p(`The tools that are hard to start never get used.
@@ -988,7 +970,7 @@ You're not building an automation. You're delegating a task. Under 5 minutes.
 clawoop.com`)
 },
 {
-  id: 'c007', persona: 'thomas', pillar: 'speed', platform: 'generic',
+  id: 'c007', role: 'everyone', pillar: 'speed', platform: 'generic',
   hook: 'Quick win for anyone trying Clawoop today: start with Price Drop Assassin.',
   gh: 'Start here: Price Drop Assassin',
   body: p(`Quick win for anyone trying Clawoop today: start with Price Drop Assassin.
@@ -1000,7 +982,7 @@ Come back tomorrow and see what it found. It's a good first taste of how the pla
 clawoop.com`)
 },
 {
-  id: 'c008', persona: 'team', pillar: 'speed', platform: 'twitter',
+  id: 'c008', role: 'everyone', pillar: 'speed', platform: 'twitter',
   hook: 'You switch between apps 1,200 times per day. We built something to fix that.',
   gh: '1,200 app switches per day',
   body: p(`You switch between apps 1,200 times per day.
@@ -1012,7 +994,7 @@ Describe the task. The agent does the rest. Like delegating to a competent teamm
 clawoop.com`)
 },
 {
-  id: 'c009', persona: 'team', pillar: 'speed', platform: 'linkedin',
+  id: 'c009', role: 'everyone', pillar: 'speed', platform: 'linkedin',
   hook: 'The average AI tool adds another app to your workflow. Clawoop connects to the ones you already use.',
   gh: 'AI that works inside your apps',
   body: p(`The average worker switches between 10+ apps per day.
@@ -1030,7 +1012,7 @@ clawoop.com`)
 
 // ─── AI-ACTS PILLAR ─────────────────────────────────────────────────────────
 {
-  id: 'c010', persona: 'alejo', pillar: 'ai-acts', platform: 'twitter',
+  id: 'c010', role: 'marketing', pillar: 'ai-acts', platform: 'twitter',
   hook: 'ChatGPT writes a great email. Then you open Gmail. Paste it. Update the CRM. Notify Slack. Repeat.',
   gh: 'AI that talks vs. AI that acts',
   body: p(`ChatGPT writes a great email.
@@ -1047,7 +1029,7 @@ Clawoop connects to your apps and does all of it.
 clawoop.com`)
 },
 {
-  id: 'c011', persona: 'alejo', pillar: 'ai-acts', platform: 'linkedin',
+  id: 'c011', role: 'marketing', pillar: 'ai-acts', platform: 'linkedin',
   hook: 'We talk about AI like it\'s already changed everything. For most of us, the daily reality is different.',
   gh: 'The AI does the thinking. You do the work.',
   body: p(`We talk about AI like it's already changed everything.
@@ -1065,7 +1047,7 @@ That's what AI automation should feel like.
 clawoop.com`)
 },
 {
-  id: 'c012', persona: 'deniz', pillar: 'ai-acts', platform: 'twitter',
+  id: 'c012', role: 'devs', pillar: 'ai-acts', platform: 'twitter',
   hook: '95% of enterprise AI pilots are failing right now. Not because the AI is bad.',
   gh: '95% of AI pilots are failing',
   body: p(`95% of enterprise AI pilots are failing right now.
@@ -1077,7 +1059,7 @@ We built Clawoop to be different. The AI connects to your apps and acts.
 clawoop.com`)
 },
 {
-  id: 'c013', persona: 'deniz', pillar: 'ai-acts', platform: 'linkedin',
+  id: 'c013', role: 'devs', pillar: 'ai-acts', platform: 'linkedin',
   hook: '95% of enterprise AI pilots are failing. I kept watching the same pattern.',
   gh: 'We built the bridge between AI and action',
   body: p(`95% of enterprise AI pilots are failing right now (MIT Media Lab). Not because the AI is bad. Because the tools promise automation and deliver more manual work.
@@ -1097,7 +1079,7 @@ Today we're live. $5/month for Starter. Free credits. No credit card.
 clawoop.com`)
 },
 {
-  id: 'c014', persona: 'won', pillar: 'ai-acts', platform: 'twitter',
+  id: 'c014', role: 'founders', pillar: 'ai-acts', platform: 'twitter',
   hook: '"Expression without execution is reaching its limit." 2026 is the year AI starts operating.',
   gh: '2026: the year AI starts operating',
   body: p(`"Expression without execution is reaching its limit."
@@ -1109,7 +1091,7 @@ We built Clawoop for that moment.
 clawoop.com`)
 },
 {
-  id: 'c015', persona: 'won', pillar: 'ai-acts', platform: 'linkedin',
+  id: 'c015', role: 'founders', pillar: 'ai-acts', platform: 'linkedin',
   hook: '"Expression without execution is reaching its limit." That line keeps coming back to me.',
   gh: 'Expression without execution',
   body: p(`"Expression without execution is reaching its limit."
@@ -1131,7 +1113,7 @@ $5/month. Free credits. No credit card required.
 clawoop.com`)
 },
 {
-  id: 'c016', persona: 'thomas', pillar: 'ai-acts', platform: 'generic',
+  id: 'c016', role: 'everyone', pillar: 'ai-acts', platform: 'generic',
   hook: 'Hot take: most "AI tools" are just expensive copy-paste assistants.',
   gh: 'Most AI tools are copy-paste assistants',
   body: p(`Hot take: most "AI tools" are just expensive copy-paste assistants.
@@ -1143,7 +1125,7 @@ Clawoop is the first one I've used where the AI does the work, not just the writ
 clawoop.com`)
 },
 {
-  id: 'c017', persona: 'team', pillar: 'ai-acts', platform: 'twitter',
+  id: 'c017', role: 'everyone', pillar: 'ai-acts', platform: 'twitter',
   hook: '"I need AI that actually DOES things, not just gives me a wall of text to copy-paste."',
   gh: 'We built the opposite of a chatbot',
   body: p(`"I need AI that actually DOES things, not just gives me a wall of text I have to copy-paste into 5 different apps."
@@ -1153,7 +1135,7 @@ We heard this over and over. So we built the opposite of a chatbot.
 clawoop.com`)
 },
 {
-  id: 'c018', persona: 'team', pillar: 'ai-acts', platform: 'linkedin',
+  id: 'c018', role: 'everyone', pillar: 'ai-acts', platform: 'linkedin',
   hook: 'There\'s a gap in every AI workflow right now.',
   gh: 'Closing the AI execution gap',
   body: p(`There's a gap in every AI workflow right now.
@@ -1169,7 +1151,7 @@ clawoop.com`)
 
 // ─── PRICING PILLAR ─────────────────────────────────────────────────────────
 {
-  id: 'c019', persona: 'alejo', pillar: 'pricing', platform: 'twitter',
+  id: 'c019', role: 'marketing', pillar: 'pricing', platform: 'twitter',
   hook: 'Lindy: $50/mo. Zapier + ChatGPT: $40/mo. Clawoop: $5/mo.',
   gh: '10x cheaper than Lindy',
   body: p(`Lindy: $50/month
@@ -1183,7 +1165,7 @@ Free credits on signup. No credit card.
 clawoop.com`)
 },
 {
-  id: 'c020', persona: 'alejo', pillar: 'pricing', platform: 'linkedin',
+  id: 'c020', role: 'marketing', pillar: 'pricing', platform: 'linkedin',
   hook: 'A quick pricing reality check for solopreneurs who want AI automation.',
   gh: 'The pricing reality check',
   body: p(`A quick pricing reality check for solopreneurs who want AI automation:
@@ -1202,7 +1184,7 @@ If you try it and hate it, you've lost nothing. If you set up Social Content Aut
 clawoop.com`)
 },
 {
-  id: 'c021', persona: 'deniz', pillar: 'pricing', platform: 'twitter',
+  id: 'c021', role: 'devs', pillar: 'pricing', platform: 'twitter',
   hook: 'We priced Clawoop Starter at $5/month on purpose.',
   gh: '$5/month is a deliberate choice',
   body: p(`We priced Clawoop Starter at $5/month on purpose.
@@ -1214,7 +1196,7 @@ Free credits. No credit card.
 clawoop.com`)
 },
 {
-  id: 'c022', persona: 'deniz', pillar: 'pricing', platform: 'linkedin',
+  id: 'c022', role: 'devs', pillar: 'pricing', platform: 'linkedin',
   hook: 'We had a long internal debate about pricing. We went the other way.',
   gh: 'Why we chose $5/month',
   body: p(`We had a long internal debate about pricing.
@@ -1232,7 +1214,7 @@ And if you want to try before committing: Free credits on signup. No credit card
 clawoop.com`)
 },
 {
-  id: 'c023', persona: 'won', pillar: 'pricing', platform: 'twitter',
+  id: 'c023', role: 'founders', pillar: 'pricing', platform: 'twitter',
   hook: '$5/month to stop being the bottleneck in your own business.',
   gh: '$5/month to stop being the bottleneck',
   body: p(`$5/month to stop being the bottleneck in your own business.
@@ -1244,7 +1226,7 @@ No credit card required to start.
 clawoop.com`)
 },
 {
-  id: 'c024', persona: 'won', pillar: 'pricing', platform: 'linkedin',
+  id: 'c024', role: 'founders', pillar: 'pricing', platform: 'linkedin',
   hook: 'Pricing is a product decision.',
   gh: 'Pricing is a product decision',
   body: p(`Pricing is a product decision.
@@ -1262,7 +1244,7 @@ Free credits on signup. No credit card.
 clawoop.com`)
 },
 {
-  id: 'c025', persona: 'thomas', pillar: 'pricing', platform: 'generic',
+  id: 'c025', role: 'everyone', pillar: 'pricing', platform: 'generic',
   hook: 'For anyone comparing Clawoop to alternatives -- the math is clear.',
   gh: 'The pricing comparison nobody else makes',
   body: p(`For anyone comparing Clawoop to alternatives:
@@ -1277,7 +1259,7 @@ The value-to-cost math on Clawoop is hard to argue with if you're a solo operato
 clawoop.com`)
 },
 {
-  id: 'c026', persona: 'team', pillar: 'pricing', platform: 'twitter',
+  id: 'c026', role: 'everyone', pillar: 'pricing', platform: 'twitter',
   hook: 'Starter plan ($5/mo) gives you 300 credits. Here\'s what that buys.',
   gh: 'What 300 credits actually gets you',
   body: p(`Social Content Autopilot: ~120 credits/run
@@ -1291,7 +1273,7 @@ Do the math. It's not a lot of coffee.
 clawoop.com`)
 },
 {
-  id: 'c027', persona: 'team', pillar: 'pricing', platform: 'linkedin',
+  id: 'c027', role: 'everyone', pillar: 'pricing', platform: 'linkedin',
   hook: 'A quick Clawoop credits breakdown for anyone doing the math.',
   gh: 'The credits breakdown',
   body: p(`A quick Clawoop credits breakdown for anyone doing the math:
@@ -1310,7 +1292,7 @@ clawoop.com`)
 
 // ─── TEMPLATES PILLAR ───────────────────────────────────────────────────────
 {
-  id: 'c028', persona: 'alejo', pillar: 'templates', platform: 'twitter',
+  id: 'c028', role: 'marketing', pillar: 'templates', platform: 'twitter',
   hook: 'Three Clawoop automations worth setting up today.',
   gh: 'Three automations worth setting up today',
   body: p(`Three Clawoop automations worth setting up today:
@@ -1324,7 +1306,7 @@ All ready to run. No setup beyond connecting your apps.
 clawoop.com`)
 },
 {
-  id: 'c029', persona: 'alejo', pillar: 'templates', platform: 'linkedin',
+  id: 'c029', role: 'marketing', pillar: 'templates', platform: 'linkedin',
   hook: 'The blank canvas problem with automation tools: they give you power and expect you to figure it out.',
   gh: 'The blank canvas problem',
   body: p(`The blank canvas problem with automation tools: they give you a powerful system and expect you to build something from scratch.
@@ -1345,7 +1327,7 @@ Start there. Once you see what's possible, you'll know what else to build.
 clawoop.com`)
 },
 {
-  id: 'c030', persona: 'deniz', pillar: 'templates', platform: 'twitter',
+  id: 'c030', role: 'devs', pillar: 'templates', platform: 'twitter',
   hook: 'We built Clawoop\'s templates around one question: what do solopreneurs do manually every week?',
   gh: 'Templates built from real workflows',
   body: p(`We built Clawoop's templates around one question: what do solopreneurs actually do manually, every single week, that should be automated?
@@ -1357,7 +1339,7 @@ So we built those first. They work out of the box.
 clawoop.com`)
 },
 {
-  id: 'c031', persona: 'deniz', pillar: 'templates', platform: 'linkedin',
+  id: 'c031', role: 'devs', pillar: 'templates', platform: 'linkedin',
   hook: 'Most automation platforms start with the builder. We started with the templates.',
   gh: 'We started with the templates',
   body: p(`Most automation platforms start with the builder. We started with the templates.
@@ -1373,7 +1355,7 @@ The blank canvas is still there if you want it. But most users never need it.
 clawoop.com`)
 },
 {
-  id: 'c032', persona: 'won', pillar: 'templates', platform: 'twitter',
+  id: 'c032', role: 'founders', pillar: 'templates', platform: 'twitter',
   hook: 'Most automation tools give you a blank canvas. Most blank canvases stay blank.',
   gh: 'Most blank canvases stay blank',
   body: p(`Most automation tools give you a blank canvas.
@@ -1385,7 +1367,7 @@ Clawoop starts with 15+ ready-made automations that already work. Pick one. Conn
 clawoop.com`)
 },
 {
-  id: 'c033', persona: 'won', pillar: 'templates', platform: 'linkedin',
+  id: 'c033', role: 'founders', pillar: 'templates', platform: 'linkedin',
   hook: 'There\'s a pattern with automation tools: the users who succeed start with something that already works.',
   gh: 'Start with something that already works',
   body: p(`There's a pattern I've noticed with automation tools: the users who get the most value start with something that already works, then customize from there. The users who churn try to build something from scratch and give up before it runs.
@@ -1399,7 +1381,7 @@ Once you've seen it work, you'll know what else to automate. The blank canvas be
 clawoop.com`)
 },
 {
-  id: 'c034', persona: 'thomas', pillar: 'templates', platform: 'generic',
+  id: 'c034', role: 'everyone', pillar: 'templates', platform: 'generic',
   hook: 'If you\'re trying Clawoop for the first time: go straight to Competitor Radar.',
   gh: 'Start with Competitor Radar',
   body: p(`If you're trying Clawoop for the first time: go straight to Competitor Radar.
@@ -1409,7 +1391,7 @@ Set it up once, and every week you get a briefing on what your competitors are d
 Takes 3 minutes to configure. Runs in the background forever. It's genuinely useful, not just impressive as a demo.`)
 },
 {
-  id: 'c035', persona: 'team', pillar: 'templates', platform: 'twitter',
+  id: 'c035', role: 'everyone', pillar: 'templates', platform: 'twitter',
   hook: 'Name the thing you do manually every week that you know you should automate.',
   gh: 'There\'s probably a template for it',
   body: p(`Name the thing you do manually every week that you know you should automate.
@@ -1421,7 +1403,7 @@ There's probably a Clawoop template for it.
 clawoop.com`)
 },
 {
-  id: 'c036', persona: 'team', pillar: 'templates', platform: 'linkedin',
+  id: 'c036', role: 'everyone', pillar: 'templates', platform: 'linkedin',
   hook: 'Clawoop\'s template library, explained simply.',
   gh: 'The template library explained',
   body: p(`Clawoop's template library, explained simply:
@@ -1441,7 +1423,7 @@ clawoop.com`)
 
 // ─── TRUST PILLAR ───────────────────────────────────────────────────────────
 {
-  id: 'c037', persona: 'alejo', pillar: 'trust', platform: 'twitter',
+  id: 'c037', role: 'marketing', pillar: 'trust', platform: 'twitter',
   hook: 'The #1 fear with AI agents: "what if it goes rogue?" Clawoop\'s answer: trust levels.',
   gh: 'You set the leash',
   body: p(`The #1 fear with AI agents: "what if it goes rogue?"
@@ -1458,7 +1440,7 @@ You set the leash. Not us.
 clawoop.com`)
 },
 {
-  id: 'c038', persona: 'alejo', pillar: 'trust', platform: 'linkedin',
+  id: 'c038', role: 'marketing', pillar: 'trust', platform: 'linkedin',
   hook: 'When I talk to solopreneurs about AI agents, the #1 hesitation is always the same.',
   gh: 'The #1 hesitation -- answered',
   body: p(`When I talk to solopreneurs about AI agents, the #1 hesitation is always the same: "what if it goes rogue and does something I didn't want?"
@@ -1480,7 +1462,7 @@ Start at Review Everything. Watch a few runs. Once you trust it, move up. The co
 clawoop.com`)
 },
 {
-  id: 'c039', persona: 'deniz', pillar: 'trust', platform: 'twitter',
+  id: 'c039', role: 'devs', pillar: 'trust', platform: 'twitter',
   hook: '135,000+ exposed OpenClaw instances. 386 malicious plugins on ClawHub. We built Clawoop differently.',
   gh: 'Safety isn\'t optional',
   body: p(`135,000+ exposed OpenClaw instances.
@@ -1494,7 +1476,7 @@ OAuth only. No credential storage. Full action logging. Trust levels you control
 clawoop.com`)
 },
 {
-  id: 'c040', persona: 'deniz', pillar: 'trust', platform: 'linkedin',
+  id: 'c040', role: 'devs', pillar: 'trust', platform: 'linkedin',
   hook: 'The hard part wasn\'t the AI. It was making it safe.',
   gh: 'Making AI agents safe to use',
   body: p(`The hard part wasn't the AI. It was making it safe.
@@ -1514,7 +1496,7 @@ $5/month for Starter. Free credits. No credit card.
 clawoop.com`)
 },
 {
-  id: 'c041', persona: 'won', pillar: 'trust', platform: 'twitter',
+  id: 'c041', role: 'founders', pillar: 'trust', platform: 'twitter',
   hook: 'The AI that runs unsupervised is too risky. The AI that asks for permission on every step is too slow.',
   gh: 'Find your own point on the dial',
   body: p(`The AI that runs unsupervised is too risky.
@@ -1527,7 +1509,7 @@ You set the leash.
 clawoop.com`)
 },
 {
-  id: 'c042', persona: 'won', pillar: 'trust', platform: 'linkedin',
+  id: 'c042', role: 'founders', pillar: 'trust', platform: 'linkedin',
   hook: 'The real challenge with AI agents isn\'t building them. It\'s knowing how much autonomy to give them.',
   gh: 'The autonomy dial problem',
   body: p(`The real challenge with AI agents isn't building them. It's knowing how much autonomy to give them.
@@ -1547,7 +1529,7 @@ Full action logging at every level. You always see what the agent did and why.
 clawoop.com`)
 },
 {
-  id: 'c043', persona: 'thomas', pillar: 'trust', platform: 'generic',
+  id: 'c043', role: 'everyone', pillar: 'trust', platform: 'generic',
   hook: 'For anyone who\'s been burned by an AI agent doing something unexpected: start at "Review Everything".',
   gh: 'Start with Review Everything mode',
   body: p(`For anyone who's been burned by an AI agent doing something unexpected:
@@ -1559,7 +1541,7 @@ Start there. Watch a few runs. Once you see it behaving exactly as expected, you
 The control dial is yours.`)
 },
 {
-  id: 'c044', persona: 'team', pillar: 'trust', platform: 'twitter',
+  id: 'c044', role: 'everyone', pillar: 'trust', platform: 'twitter',
   hook: 'Each Clawoop agent gets its own email address. Your outreach doesn\'t come from a random bot.',
   gh: 'Per-agent email identities',
   body: p(`Each Clawoop agent gets its own email address (@agents.clawoop.com).
@@ -1571,7 +1553,7 @@ Full action logging. You see what it did and why, every time.
 clawoop.com`)
 },
 {
-  id: 'c045', persona: 'team', pillar: 'trust', platform: 'linkedin',
+  id: 'c045', role: 'everyone', pillar: 'trust', platform: 'linkedin',
   hook: 'How Clawoop handles security and trust -- the things that actually matter.',
   gh: 'How Clawoop handles security',
   body: p(`How Clawoop handles security and trust:
@@ -2180,7 +2162,7 @@ Next steps: we're debriefing this week and planning the next phase. Stay tuned f
 // Merge launch content into main CONTENT with pillar='launch' and platform mapped from channel
 LAUNCH_WEEK.forEach(lw => {
   CONTENT.push({
-    id: lw.id, persona: (lw.owner || '').toLowerCase() === 'tom' ? 'thomas' : 'alejo',
+    id: lw.id, role: (lw.owner || '').toLowerCase() === 'tom' ? 'everyone' : 'marketing',
     pillar: 'launch', platform: lw.channel, hook: lw.hook, gh: lw.gh, body: lw.body
   });
 });
@@ -2217,7 +2199,7 @@ async function initCloudSyncCM() {
 // ===== STATE =====
 const SK = 'clawoop-cm-v2';
 let currentMode = 'bank';
-let S = { user: null, posted: [], filter: { platform: 'all', pillar: 'all', persona: 'all', status: 'all' } };
+let S = { user: null, posted: [], filter: { platform: 'all', pillar: 'all', role: 'all', status: 'all' } };
 
 function loadS() {
   try {
@@ -2247,8 +2229,8 @@ function getTodaysPicks() {
   const unpasted = CONTENT.filter(p => !S.posted.includes(p.id));
   const pool = unpasted.length >= 3 ? unpasted : CONTENT;
 
-  // Pick 1: prefer user's persona
-  let pool1 = S.user ? pool.filter(p => p.persona === S.user || p.persona === 'team') : pool;
+  // Pick 1: prefer user's role
+  let pool1 = S.user ? pool.filter(p => p.role === S.user || p.role === 'everyone') : pool;
   if (!pool1.length) pool1 = pool;
   const pick1 = pool1[day % pool1.length];
 
@@ -2270,7 +2252,7 @@ function filteredContent() {
   return CONTENT.filter(post => {
     if (S.filter.platform !== 'all' && post.platform !== S.filter.platform) return false;
     if (S.filter.pillar !== 'all' && post.pillar !== S.filter.pillar) return false;
-    if (S.filter.persona !== 'all' && post.persona !== S.filter.persona) return false;
+    if (S.filter.role !== 'all' && post.role !== S.filter.role) return false;
     if (S.filter.status === 'posted' && !S.posted.includes(post.id)) return false;
     if (S.filter.status === 'unused' && S.posted.includes(post.id)) return false;
     return true;
@@ -2285,8 +2267,8 @@ function renderAll() {
 
 function renderSidebar() {
   // Persona buttons
-  document.querySelectorAll('.persona-btn').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.p === S.user);
+  document.querySelectorAll('.role-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.r === S.user);
   });
   // Filter options
   document.querySelectorAll('.fopt').forEach(opt => {
@@ -2331,14 +2313,14 @@ function makeCard(post, isPick) {
   const PLAT_LABELS = { twitter: 'Twitter / X', linkedin: 'LinkedIn', reddit: 'Reddit', discord: 'Discord', producthunt: 'Product Hunt', generic: 'Any' };
   const platLabel = PLAT_LABELS[post.platform] || post.platform;
   const pillarLabel = PILLAR_LABELS[post.pillar];
-  const personaLabel = PERSONA_LABELS[post.persona];
-  const personaInit = PERSONA_INITIALS[post.persona];
+  const roleLabel = ROLE_LABELS[post.role];
+  const roleInit = ROLE_INITIALS[post.role];
 
   card.innerHTML = `
     <div class="card-tags">
       <span class="tag tag-${post.platform}">${platLabel}</span>
       <span class="tag tag-${post.pillar}">${pillarLabel}</span>
-      <div class="p-dot" data-p="${post.persona}" title="${personaLabel}">${personaInit}</div>
+      <div class="p-dot" data-r="${post.role}" title="${roleLabel}">${roleInit}</div>
     </div>
     <div class="card-hook" id="hook-${post.id}"></div>
     <div id="full-${post.id}" style="display:none"></div>
@@ -2363,8 +2345,8 @@ function makeCard(post, isPick) {
 }
 
 // ===== INTERACTIONS =====
-function setUser(persona) {
-  S.user = S.user === persona ? null : persona;
+function setRole(role) {
+  S.user = S.user === role ? null : role;
   saveS();
   renderAll();
 }
