@@ -1076,12 +1076,25 @@
 <body>
 
 <!-- Tool Switcher Nav -->
-<nav class="tool-switcher">
-  <a href="index.html" class="ts-link ts-home" title="Home">&#8592;</a>
-  <a href="graphics.html" class="ts-link ts-active">Graphics</a>
-  <a href="content-machine.html" class="ts-link">Content</a>
-  <a href="launch-dashboard.html" class="ts-link">Launch</a>
+<nav class="tool-switcher" id="tool-switcher">
+  <a href="#" class="ts-link ts-home" title="Home">&#8592;</a>
+  <a href="#" class="ts-link ts-active">Graphics</a>
+  <a href="#" class="ts-link">Content</a>
+  <a href="#" class="ts-link">Launch</a>
 </nav>
+<script>
+(function(){
+  var gh = location.hostname.indexOf('github.io') !== -1;
+  var paths = [
+    gh ? 'index.html' : '#',
+    gh ? 'graphics.html' : 'clawoop-graphics.html',
+    gh ? 'content-machine.html' : 'clawoop-content-machine.html',
+    gh ? 'launch-dashboard.html' : '../projects/ablo/marketing/03-clawoop-launch_mar11/dashboard.html'
+  ];
+  var links = document.querySelectorAll('#tool-switcher .ts-link');
+  for(var i=0;i<links.length;i++) links[i].href = paths[i];
+})();
+</script>
 <style>
 .tool-switcher {
   position: fixed; top: 12px; right: 16px; z-index: 9999;
