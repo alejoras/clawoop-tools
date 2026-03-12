@@ -46,10 +46,10 @@
     overflow: hidden;
   }
 
-  /* ===== TWO-PANEL LAYOUT ===== */
+  /* ===== TWO-PANEL LAYOUT (responsive) ===== */
   .panel-left {
-    width: 380px;
-    min-width: 380px;
+    width: clamp(300px, 26vw, 420px);
+    min-width: 280px;
     height: 100vh;
     background: var(--surface-1);
     border-right: 1px solid var(--border);
@@ -59,22 +59,22 @@
   }
 
   .panel-left-header {
-    padding: 16px 20px 12px;
+    padding: clamp(10px, 1.2vw, 16px) clamp(14px, 1.4vw, 20px) clamp(8px, 1vw, 12px);
     border-bottom: 1px solid var(--border);
     flex-shrink: 0;
   }
 
   .panel-left-header h1 {
-    font-size: 15px;
+    font-size: clamp(12px, 1.1vw, 16px);
     font-weight: 600;
     color: var(--foreground);
-    margin-bottom: 12px;
+    margin-bottom: clamp(8px, 0.8vw, 12px);
   }
 
   .panel-left-body {
     flex: 1;
     overflow-y: auto;
-    padding: 16px 20px;
+    padding: clamp(10px, 1.2vw, 16px) clamp(14px, 1.4vw, 20px);
   }
 
   .panel-right {
@@ -108,7 +108,7 @@
   }
 
   .size-label {
-    font-size: 11px;
+    font-size: clamp(9px, 0.8vw, 12px);
     font-weight: 500;
     color: var(--muted);
     letter-spacing: 0.05em;
@@ -120,22 +120,22 @@
 
   .control-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: clamp(8px, 0.8vw, 12px);
+    margin-bottom: clamp(8px, 0.8vw, 12px);
     flex-wrap: wrap;
   }
 
   .control-group {
     flex: 1;
-    min-width: 140px;
+    min-width: 120px;
   }
 
   .control-group label {
     display: block;
-    font-size: 10px;
+    font-size: clamp(8px, 0.7vw, 11px);
     font-weight: 600;
     color: var(--muted);
-    margin-bottom: 5px;
+    margin-bottom: clamp(3px, 0.4vw, 5px);
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -144,19 +144,19 @@
   .control-group select,
   .control-group textarea {
     width: 100%;
-    padding: 8px 12px;
+    padding: clamp(5px, 0.6vw, 8px) clamp(8px, 0.8vw, 12px);
     background: var(--surface-0);
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--foreground);
     font-family: var(--font-sans);
-    font-size: 13px;
+    font-size: clamp(11px, 0.9vw, 14px);
     outline: none;
   }
 
   .control-group textarea {
     resize: vertical;
-    min-height: 48px;
+    min-height: clamp(36px, 3.5vw, 48px);
   }
 
   .control-group input:focus,
@@ -167,18 +167,18 @@
 
   .template-buttons {
     display: flex;
-    gap: 5px;
+    gap: clamp(3px, 0.4vw, 5px);
     flex-wrap: wrap;
   }
 
   .template-buttons button {
-    padding: 5px 10px;
+    padding: clamp(3px, 0.4vw, 5px) clamp(6px, 0.7vw, 10px);
     background: var(--surface-3);
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--muted-light);
     font-family: var(--font-sans);
-    font-size: 11px;
+    font-size: clamp(9px, 0.8vw, 12px);
     cursor: pointer;
     transition: all 0.15s;
   }
@@ -198,10 +198,10 @@
 
   /* Action buttons pinned to bottom of left panel */
   .panel-left-footer {
-    padding: 12px 20px;
+    padding: clamp(8px, 0.8vw, 12px) clamp(14px, 1.4vw, 20px);
     border-top: 1px solid var(--border);
     display: flex;
-    gap: 8px;
+    gap: clamp(5px, 0.6vw, 8px);
     flex-shrink: 0;
   }
 
@@ -800,10 +800,10 @@
   /* Action buttons -- in panel footer */
   .action-btn {
     flex: 1;
-    padding: 9px 16px;
+    padding: clamp(6px, 0.7vw, 10px) clamp(10px, 1.1vw, 16px);
     border-radius: 8px;
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: clamp(10px, 0.85vw, 13px);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.15s;
@@ -1047,6 +1047,15 @@
   /* Section dividers in controls */
   .template-controls { padding-top: 4px; }
   .template-controls .control-row:last-child { margin-bottom: 0; }
+
+  /* Responsive overrides for inline-styled elements */
+  .panel-left-body span[style*="font-size:12px"] {
+    font-size: clamp(10px, 0.85vw, 13px) !important;
+  }
+  .panel-left-body div[style*="font-size:13px"],
+  .panel-left-body div[style*="font-size:14px"] {
+    font-size: clamp(11px, 0.9vw, 14px) !important;
+  }
 </style>
 </head>
 <body>
