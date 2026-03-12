@@ -1075,6 +1075,31 @@
 </head>
 <body>
 
+<!-- Tool Switcher Nav -->
+<nav class="tool-switcher">
+  <a href="index.html" class="ts-link ts-home" title="Home">&#8592;</a>
+  <a href="graphics.html" class="ts-link ts-active">Graphics</a>
+  <a href="content-machine.html" class="ts-link">Content</a>
+  <a href="launch-dashboard.html" class="ts-link">Launch</a>
+</nav>
+<style>
+.tool-switcher {
+  position: fixed; top: 12px; right: 16px; z-index: 9999;
+  display: flex; gap: 2px; align-items: center;
+  background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+  padding: 3px; font-family: 'Inter', sans-serif;
+}
+.ts-link {
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  color: #888; text-decoration: none; border-radius: 6px;
+  transition: color 0.15s, background 0.15s; white-space: nowrap;
+}
+.ts-link:hover { color: #ccc; background: rgba(255,255,255,0.06); }
+.ts-link.ts-active { color: #fff; background: rgba(54,103,166,0.25); }
+.ts-home { font-size: 14px; padding: 5px 8px; }
+</style>
+
 <!-- LEFT PANEL: Controls -->
 <div class="panel-left">
 <div class="panel-left-header">
