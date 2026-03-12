@@ -88,6 +88,36 @@ body {
   letter-spacing: 0.05em;
 }
 
+.campaign-start-section {
+  padding: 12px 20px;
+  border-bottom: 1px solid var(--border);
+}
+.campaign-start-label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+.campaign-start-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+}
+.campaign-day-label {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
 .nav-section {
   padding: 16px 12px 8px;
 }
@@ -495,6 +525,12 @@ body {
     </button>
   </div>
 
+  <div class="campaign-start-section">
+    <div class="campaign-start-label">Campaign starts</div>
+    <input type="date" id="campaignStartDate" class="campaign-start-input">
+    <div class="campaign-day-label" id="campaignDayLabel"></div>
+  </div>
+
   <div class="nav-section" style="--section-color: var(--growth)">
     <div class="nav-section-label"><span class="dot" style="background:var(--growth)"></span> Execution</div>
     <a class="nav-item" data-view="today">Today</a>
@@ -555,10 +591,6 @@ body {
     <div class="timeline-label">Launch Timeline</div>
   </div>
 
-  <div style="padding: 12px 16px; border-top: 1px solid var(--border);">
-    <label style="font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-secondary); display: block; margin-bottom: 6px;">Campaign starts</label>
-    <input type="date" id="campaignStartDate" style="font-size: 12px; font-family: 'Inter', sans-serif; border: 1px solid var(--border); border-radius: 4px; padding: 4px 8px; background: var(--bg); color: var(--text); width: 100%;" />
-  </div>
 
   <div class="sidebar-compact-overview" id="sidebarCompactOverview">
     <div class="sidebar-compact-label">Campaign Progress</div>
@@ -1645,11 +1677,23 @@ function refreshAllViews() {
 
 const dateInput = document.getElementById('campaignStartDate');
 dateInput.value = CAMPAIGN_START;
+updateCampaignDayLabel();
 dateInput.addEventListener('change', (e) => {
   CAMPAIGN_START = e.target.value;
   localStorage.setItem('warroom-start-' + SLUG, CAMPAIGN_START);
+  updateCampaignDayLabel();
   refreshAllViews();
 });
+
+function updateCampaignDayLabel() {
+  const label = document.getElementById('campaignDayLabel');
+  if (!label) return;
+  const start = new Date(CAMPAIGN_START + 'T00:00:00');
+  const now = new Date();
+  const diff = Math.floor((now - start) / 86400000);
+  if (diff >= 0) label.textContent = `Day ${diff + 1}`;
+  else label.textContent = `${Math.abs(diff)}d until launch`;
+}
 
 // ── Initial render ────────────────────────────────────────────
 
