@@ -761,13 +761,28 @@
   }
 
   /* Twitter overrides:
-     - Left-align rows so tag + CTA stay in the safe left zone (Twitter crops right ~30% on mobile)
-     - Raise bottom row above profile-pic overlap zone (~bottom 120px)
-     - Headline nowrap removed so it wraps within left content area */
-  .graphic-banner-tw.tpl-banner { padding: 60px 120px 150px; }
-  .graphic-banner-tw .headline { font-size: 72px; white-space: normal; max-width: 820px; }
-  .graphic-banner-tw .banner-row { justify-content: flex-start; gap: 32px; }
-  .graphic-banner-tw .subline { flex: none; max-width: 560px; }
+     Profile pic covers bottom-left ~25%. Push all content right.
+     Safe zone: right 70% of the banner. */
+  .graphic-banner-tw.tpl-banner {
+    padding: 48px 80px 48px 420px;
+    align-items: flex-end;
+    text-align: right;
+  }
+  .graphic-banner-tw .headline {
+    font-size: 64px;
+    white-space: normal;
+    max-width: 900px;
+    text-align: right;
+  }
+  .graphic-banner-tw .banner-row {
+    justify-content: flex-end;
+    gap: 28px;
+  }
+  .graphic-banner-tw .subline {
+    flex: none;
+    max-width: 500px;
+    text-align: right;
+  }
 
   /* LinkedIn overrides (shorter: 198px vs 250px) */
   .graphic-banner-li.tpl-banner { padding: 44px 104px; }
@@ -1841,8 +1856,8 @@
   const bannerFitConfig = {
     'banner-tw': {
       elements: [
-        { id: 'banner-tw-headline', ideal: 72, min: 36, maxWidth: 820, maxLines: 2 },
-        { id: 'banner-tw-subline',  ideal: 26, min: 16, maxWidth: 560, maxLines: 2 },
+        { id: 'banner-tw-headline', ideal: 64, min: 32, maxWidth: 900, maxLines: 2 },
+        { id: 'banner-tw-subline',  ideal: 24, min: 14, maxWidth: 500, maxLines: 2 },
       ]
     },
     'banner-li': {
