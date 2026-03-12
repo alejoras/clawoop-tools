@@ -85,7 +85,7 @@
     justify-content: center;
     overflow: auto;
     position: relative;
-    background: var(--surface-0);
+    background: #151515;
   }
 
   /* Checkerboard-style subtle bg to frame the graphic */
@@ -1992,31 +1992,34 @@
 
   async function captureGraphic() {
     const el = getActiveGraphic();
-    const wrapper = document.querySelector('.canvas-wrapper');
-    // Save and remove preview transform for full-res capture
-    const savedTransform = el.style.transform;
-    const savedWW = wrapper ? wrapper.style.width : '';
-    const savedWH = wrapper ? wrapper.style.height : '';
-    el.style.transform = 'none';
-    if (wrapper) {
-      const [gw, gh] = graphicSizes[currentTemplate] || [1080, 1080];
-      wrapper.style.width = gw + 'px';
-      wrapper.style.height = gh + 'px';
-    }
+    const [gw, gh] = graphicSizes[currentTemplate] || [1080, 1080];
 
-    const canvas = await html2canvas(el, {
+    // Clone the graphic into an off-screen container at native size.
+    // This avoids transform/overflow issues that cause preview-export mismatch.
+    const clone = el.cloneNode(true);
+    clone.style.cssText = `
+      position: fixed; left: -9999px; top: 0;
+      width: ${gw}px; height: ${gh}px;
+      transform: none; margin: 0;
+      overflow: hidden;
+    `;
+    clone.classList.remove('hidden', 'preview-scale', 'preview-scale-banner-tw',
+      'preview-scale-banner-li', 'preview-scale-banner-wb', 'preview-scale-profile');
+    document.body.appendChild(clone);
+
+    // Brief reflow so fonts/layout settle
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    const canvas = await html2canvas(clone, {
+      width: gw,
+      height: gh,
       scale: 1,
       useCORS: true,
       allowTaint: true,
       backgroundColor: '#09090b',
     });
 
-    // Restore
-    el.style.transform = savedTransform;
-    if (wrapper) {
-      wrapper.style.width = savedWW;
-      wrapper.style.height = savedWH;
-    }
+    document.body.removeChild(clone);
     return canvas;
   }
 
