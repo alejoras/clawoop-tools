@@ -1,0 +1,7 @@
+name = "clawoop-state"
+main = "index.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "STATE"
+id = "badb2d1e63c64851aae2765a07e0d8a4"

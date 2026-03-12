@@ -554,6 +554,60 @@ body {
 </div>
 
 <script>
+// ── Cloud State Sync ──────────────────────────────────────────
+const CLOUD_API = 'https://clawoop-state.alejoescriva.workers.dev';
+const CLOUD_PAGE = 'launch-dashboard';
+let _cloudState = null;
+let _saveTimer = null;
+
+async function cloudLoad() {
+  try {
+    const res = await fetch(`${CLOUD_API}/${CLOUD_PAGE}`);
+    if (res.ok) _cloudState = await res.json();
+  } catch {}
+  return _cloudState || {};
+}
+
+function cloudSave() {
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(async () => {
+    const state = {
+      roles: loadRoleMappingsLocal(),
+      checklist: loadChecklistLocal(),
+      mdCheckboxes: getMdCheckboxes(),
+    };
+    try { await fetch(`${CLOUD_API}/${CLOUD_PAGE}`, { method: 'PUT', body: JSON.stringify(state) }); } catch {}
+  }, 500);
+}
+
+function getMdCheckboxes() {
+  const result = {};
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith('clawoop-launch-') && k.includes('-cb-')) result[k] = localStorage.getItem(k);
+  }
+  return result;
+}
+
+async function initCloudSync() {
+  const cloud = await cloudLoad();
+  if (cloud.roles && Object.keys(cloud.roles).length) {
+    const local = loadRoleMappingsLocal();
+    if (!Object.keys(local).length) { localStorage.setItem(STORAGE_KEY, JSON.stringify(cloud.roles)); }
+  }
+  if (cloud.checklist && Object.keys(cloud.checklist).length) {
+    const local = loadChecklistLocal();
+    if (!Object.keys(local).length) { localStorage.setItem(CL_STORAGE, JSON.stringify(cloud.checklist)); }
+  }
+  if (cloud.mdCheckboxes) {
+    for (const [k, v] of Object.entries(cloud.mdCheckboxes)) {
+      if (!localStorage.getItem(k)) localStorage.setItem(k, v);
+    }
+  }
+  if (currentView === 'checklist') renderChecklistView();
+  else if (currentView === 'team') renderTeamView();
+}
+
 let currentFile = null;
 let currentView = null;
 let rawMarkdown = '';
@@ -734,12 +788,14 @@ const ROLES = [
   { role: 'Brand Designer',    color: 'var(--design)',    responsibilities: 'Asset specs, social templates, PH visuals' },
 ];
 
-function loadRoleMappings() {
+function loadRoleMappingsLocal() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; } catch { return {}; }
 }
+function loadRoleMappings() { return loadRoleMappingsLocal(); }
 
 function saveRoleMappings(mappings) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(mappings));
+  cloudSave();
 }
 
 function applyRoleReplacements(html) {
@@ -863,12 +919,14 @@ const CHECKLIST = [
   ]},
 ];
 
-function loadChecklist() {
+function loadChecklistLocal() {
   try { return JSON.parse(localStorage.getItem(CL_STORAGE)) || {}; } catch { return {}; }
 }
+function loadChecklist() { return loadChecklistLocal(); }
 
 function saveChecklist(state) {
   localStorage.setItem(CL_STORAGE, JSON.stringify(state));
+  cloudSave();
 }
 
 function renderChecklistView() {
@@ -950,7 +1008,7 @@ function renderMarkdown(md) {
     const key = `clawoop-launch-${currentFile}-cb-${i}`;
     const saved = localStorage.getItem(key);
     if (saved === 'true') cb.checked = true;
-    cb.addEventListener('change', () => localStorage.setItem(key, cb.checked));
+    cb.addEventListener('change', () => { localStorage.setItem(key, cb.checked); cloudSave(); });
   });
 }
 
@@ -1148,6 +1206,9 @@ document.getElementById('copyBtn').addEventListener('click', () => {
 document.getElementById('printBtn').addEventListener('click', () => window.print());
 
 document.querySelector('[data-view="overview"]').click();
+
+// Load cloud state after initial render
+initCloudSync();
 </script>
 </body>
 </html>

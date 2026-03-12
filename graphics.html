@@ -198,19 +198,17 @@
   }
 
   .tpl-hero .headline {
+    font-family: var(--font-serif);
     font-size: 72px;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.1;
     color: var(--foreground);
-    letter-spacing: -0.025em;
     max-width: 900px;
     margin-bottom: 32px;
   }
 
   .tpl-hero .headline em {
-    font-family: var(--font-serif);
     font-style: italic;
-    font-weight: 400;
     color: var(--accent-light);
   }
 
@@ -282,12 +280,17 @@
   }
 
   .tpl-feature .headline {
+    font-family: var(--font-serif);
     font-size: 64px;
-    font-weight: 700;
+    font-weight: 400;
     line-height: 1.1;
     color: var(--foreground);
-    letter-spacing: -0.025em;
     margin-bottom: 24px;
+  }
+
+  .tpl-feature .headline em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-feature .description {
@@ -308,10 +311,10 @@
   .tpl-feature .cta {
     font-size: 18px;
     font-weight: 600;
-    color: var(--surface-0);
+    color: white;
     background: var(--accent);
-    padding: 14px 32px;
-    border-radius: 12px;
+    padding: 14px 40px;
+    border-radius: 9999px;
   }
 
   /* -- TEMPLATE: Stat / Number -- */
@@ -353,11 +356,17 @@
   }
 
   .tpl-stat .headline {
+    font-family: var(--font-serif);
     font-size: 48px;
-    font-weight: 600;
+    font-weight: 400;
     color: var(--foreground);
     line-height: 1.2;
     margin-bottom: 16px;
+  }
+
+  .tpl-stat .headline em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-stat .subline {
@@ -431,12 +440,17 @@
   }
 
   .tpl-comparison .headline {
+    font-family: var(--font-serif);
     font-size: 52px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--foreground);
     line-height: 1.15;
-    letter-spacing: -0.025em;
     margin-bottom: 48px;
+  }
+
+  .tpl-comparison .headline em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-comparison .comparison-grid {
@@ -491,11 +505,16 @@
   }
 
   .tpl-terminal .headline {
+    font-family: var(--font-serif);
     font-size: 48px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--foreground);
-    letter-spacing: -0.025em;
     margin-bottom: 40px;
+  }
+
+  .tpl-terminal .headline em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-terminal .terminal-window {
@@ -655,18 +674,16 @@
   .tpl-banner .headline {
     position: relative;
     z-index: 1;
+    font-family: var(--font-serif);
     font-size: 96px;
     white-space: nowrap;
-    font-weight: 800;
+    font-weight: 400;
     color: var(--foreground);
     line-height: 1.0;
-    letter-spacing: -0.04em;
   }
 
   .tpl-banner .headline em {
-    font-family: var(--font-serif);
     font-style: italic;
-    font-weight: 400;
     color: var(--accent-light);
   }
 
@@ -844,11 +861,16 @@
   .tpl-trust > * { position: relative; z-index: 1; }
 
   .tpl-trust .trust-title {
+    font-family: var(--font-serif);
     font-size: 44px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--foreground);
-    letter-spacing: -0.02em;
     margin-bottom: 56px;
+  }
+
+  .tpl-trust .trust-title em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-trust .trust-track {
@@ -947,13 +969,18 @@
   }
 
   .tpl-ph .ph-headline {
+    font-family: var(--font-serif);
     font-size: 52px;
-    font-weight: 700;
+    font-weight: 400;
     color: var(--foreground);
     line-height: 1.1;
-    letter-spacing: -0.025em;
     max-width: 800px;
     margin-bottom: 20px;
+  }
+
+  .tpl-ph .ph-headline em {
+    font-style: italic;
+    color: var(--accent-light);
   }
 
   .tpl-ph .ph-subline {
@@ -966,11 +993,11 @@
 
   .tpl-ph .ph-cta {
     font-size: 22px;
-    font-weight: 700;
+    font-weight: 600;
     color: white;
     background: var(--accent);
     padding: 18px 52px;
-    border-radius: 50px;
+    border-radius: 9999px;
   }
 
   /* Utility: hide in preview */
@@ -1021,7 +1048,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Headline (use &lt;em&gt; for serif accent)</label>
-        <textarea oninput="updateField('hero-headline', this.value)">AI that <em>acts</em>, not just talks.</textarea>
+        <textarea oninput="updateField('hero-headline', this.value)">AI that talks is easy.<br>AI that acts is <em>hard.</em></textarea>
       </div>
     </div>
     <div class="control-row">
@@ -1072,7 +1099,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Headline</label>
-        <input type="text" value="Trust Levels" oninput="updateField('feature-headline', this.value)">
+        <textarea oninput="updateField('feature-headline', this.value)">Your agents.<br><em>Your rules.</em></textarea>
       </div>
     </div>
     <div class="control-row">
@@ -1122,13 +1149,13 @@
     <div class="control-row">
       <div class="control-group">
         <label>Headline</label>
-        <input type="text" value="Full AI automation." oninput="updateField('stat-headline', this.value)">
+        <textarea oninput="updateField('stat-headline', this.value)">Full AI automation.<br><em>Not a typo.</em></textarea>
       </div>
     </div>
     <div class="control-row">
       <div class="control-group">
         <label>Subline</label>
-        <input type="text" value="10x less than any competitor. Not a typo." oninput="updateField('stat-subline', this.value)">
+        <input type="text" value="10x less than any competitor." oninput="updateField('stat-subline', this.value)">
       </div>
     </div>
     <div class="control-row">
@@ -1201,7 +1228,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Headline</label>
-        <input type="text" value="Why pay 10x more for AI automation?" oninput="updateField('comparison-headline', this.value)">
+        <textarea oninput="updateField('comparison-headline', this.value)">Why pay 10x more<br>for <em>AI automation?</em></textarea>
       </div>
     </div>
     <div class="control-row">
@@ -1229,7 +1256,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Headline</label>
-        <input type="text" value="Describe it. Done." oninput="updateField('terminal-headline', this.value)">
+        <textarea oninput="updateField('terminal-headline', this.value)">Describe it. <em>Done.</em></textarea>
       </div>
     </div>
     <div class="control-row">
@@ -1272,7 +1299,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Title</label>
-        <input type="text" value="Your agents, your rules." oninput="updateField('trust-title', this.value)">
+        <textarea oninput="updateField('trust-title', this.value)">Your agents, <em>your rules.</em></textarea>
       </div>
       <div class="control-group">
         <label>Footer</label>
@@ -1314,7 +1341,7 @@
     <div class="control-row">
       <div class="control-group" style="flex:2">
         <label>Headline</label>
-        <input type="text" value="We're live on Product Hunt." oninput="updateField('ph-headline', this.value)">
+        <input type="text" value="We're live on <em>Product Hunt.</em>" oninput="updateField('ph-headline', this.value)">
       </div>
     </div>
     <div class="control-row">
@@ -1525,7 +1552,7 @@
   <!-- HERO -->
   <div id="graphic-hero" class="graphic tpl-hero preview-scale">
     <img class="logo-pinned" src="https://clawoop.com/logo.png" alt="Clawoop" onerror="this.style.display='none'">
-    <div class="headline" id="hero-headline">AI that <em>acts</em>, not just talks.</div>
+    <div class="headline" id="hero-headline">AI that talks is easy.<br>AI that acts is <em>hard.</em></div>
     <div class="subline" id="hero-subline">Describe what you need. Your agents handle the rest.</div>
     <div class="url-pinned">clawoop.com</div>
   </div>
@@ -1537,7 +1564,7 @@
       <div class="tag" id="feature-tag">NEW FEATURE</div>
     </div>
     <div class="feature-icon" id="feature-icon">🎯</div>
-    <div class="headline" id="feature-headline">Trust Levels</div>
+    <div class="headline" id="feature-headline">Your agents.<br><em>Your rules.</em></div>
     <div class="description" id="feature-description">Control exactly how much freedom your AI agents get. From review-everything to full autopilot.</div>
     <div class="bottom-bar">
       <div class="cta" id="feature-cta">Try it free</div>
@@ -1552,8 +1579,8 @@
       <span class="stat-number" id="stat-number">$5</span>
       <span class="stat-unit" id="stat-unit">/month</span>
     </div>
-    <div class="headline" id="stat-headline">Full AI automation.</div>
-    <div class="subline" id="stat-subline">10x less than any competitor. Not a typo.</div>
+    <div class="headline" id="stat-headline">Full AI automation.<br><em>Not a typo.</em></div>
+    <div class="subline" id="stat-subline">10x less than any competitor.</div>
     <div class="url-pinned">clawoop.com</div>
   </div>
 
@@ -1575,7 +1602,7 @@
   <!-- COMPARISON -->
   <div id="graphic-comparison" class="graphic tpl-comparison preview-scale hidden">
     <img class="logo-pinned" src="https://clawoop.com/logo.png" alt="Clawoop" onerror="this.style.display='none'">
-    <div class="headline" id="comparison-headline">Why pay 10x more for AI automation?</div>
+    <div class="headline" id="comparison-headline">Why pay 10x more<br>for <em>AI automation?</em></div>
     <div class="comparison-grid">
       <div class="comp-card highlight">
         <div class="comp-name">Clawoop</div>
@@ -1604,7 +1631,7 @@
   <!-- TERMINAL -->
   <div id="graphic-terminal" class="graphic tpl-terminal preview-scale hidden">
     <img class="logo-pinned" src="https://clawoop.com/logo.png" alt="Clawoop" onerror="this.style.display='none'">
-    <div class="headline" id="terminal-headline">Describe it. Done.</div>
+    <div class="headline" id="terminal-headline">Describe it. <em>Done.</em></div>
     <div class="terminal-window">
       <div class="terminal-header">
         <div class="terminal-dot red"></div>
@@ -1665,7 +1692,7 @@
   <!-- TRUST LEVEL VISUAL -->
   <div id="graphic-trust" class="graphic tpl-trust preview-scale hidden">
     <img class="logo-pinned" src="https://clawoop.com/logo.png" alt="Clawoop" onerror="this.style.display='none'">
-    <div class="trust-title" id="trust-title">Your agents, your rules.</div>
+    <div class="trust-title" id="trust-title">Your agents, <em>your rules.</em></div>
     <div class="trust-track"></div>
     <div class="trust-levels">
       <div class="trust-card">
@@ -1697,7 +1724,7 @@
   <div id="graphic-ph" class="graphic tpl-ph preview-scale hidden">
     <img class="logo-pinned" src="https://clawoop.com/logo.png" alt="Clawoop" onerror="this.style.display='none'">
     <div class="ph-badge">P</div>
-    <div class="ph-headline" id="ph-headline">We're live on Product Hunt.</div>
+    <div class="ph-headline" id="ph-headline">We're live on <em>Product Hunt.</em></div>
     <div class="ph-subline" id="ph-subline">AI agents that do the work. $5/month.</div>
     <div class="ph-cta" id="ph-cta">Upvote us ↑</div>
     <div class="url-pinned">clawoop.com</div>
@@ -1714,18 +1741,140 @@
 </div>
 
 <script>
+  /* ==========================================
+     AUTO-FIT TEXT SYSTEM
+     Automatically scales text to fit within
+     its container. Works like responsive web
+     typography inside fixed-pixel canvases.
+     ========================================== */
+
+  // Config per template: which elements to auto-fit, their ideal/min sizes, and container bounds
+  const autoFitConfig = {
+    hero: {
+      elements: [
+        { id: 'hero-headline', ideal: 72, min: 36, maxWidth: 900, maxLines: 3 },
+        { id: 'hero-subline',  ideal: 28, min: 18, maxWidth: 700, maxLines: 2 },
+      ]
+    },
+    feature: {
+      elements: [
+        { id: 'feature-headline', ideal: 64, min: 32, maxWidth: 920, maxLines: 2 },
+        { id: 'feature-description', ideal: 26, min: 16, maxWidth: 700, maxLines: 4 },
+      ]
+    },
+    stat: {
+      elements: [
+        { id: 'stat-number', ideal: 160, min: 80, maxWidth: 880, maxLines: 1 },
+        { id: 'stat-headline', ideal: 48, min: 28, maxWidth: 880, maxLines: 2 },
+        { id: 'stat-subline', ideal: 24, min: 16, maxWidth: 700, maxLines: 2 },
+      ]
+    },
+    quote: {
+      elements: [
+        { id: 'quote-text', ideal: 52, min: 28, maxWidth: 880, maxLines: 6 },
+      ]
+    },
+    comparison: {
+      elements: [
+        { id: 'comparison-headline', ideal: 52, min: 28, maxWidth: 920, maxLines: 2 },
+      ]
+    },
+    terminal: {
+      elements: [
+        { id: 'terminal-headline', ideal: 48, min: 28, maxWidth: 920, maxLines: 2 },
+      ]
+    },
+    trust: {
+      elements: [
+        { id: 'trust-title', ideal: 44, min: 28, maxWidth: 880, maxLines: 2 },
+      ]
+    },
+    ph: {
+      elements: [
+        { id: 'ph-headline', ideal: 52, min: 28, maxWidth: 800, maxLines: 3 },
+        { id: 'ph-subline',  ideal: 24, min: 16, maxWidth: 640, maxLines: 2 },
+      ]
+    },
+  };
+
+  // Banner configs (different canvas sizes)
+  const bannerFitConfig = {
+    'banner-tw': {
+      elements: [
+        { id: 'banner-tw-headline', ideal: 72, min: 36, maxWidth: 820, maxLines: 2 },
+        { id: 'banner-tw-subline',  ideal: 26, min: 16, maxWidth: 560, maxLines: 2 },
+      ]
+    },
+    'banner-li': {
+      elements: [
+        { id: 'banner-li-headline', ideal: 68, min: 36, maxWidth: 1200, maxLines: 1 },
+        { id: 'banner-li-subline',  ideal: 20, min: 14, maxWidth: 760, maxLines: 2 },
+      ]
+    },
+    'banner-wb': {
+      elements: [
+        { id: 'banner-wb-headline', ideal: 72, min: 36, maxWidth: 1200, maxLines: 1 },
+        { id: 'banner-wb-subline',  ideal: 20, min: 14, maxWidth: 760, maxLines: 2 },
+      ]
+    },
+  };
+
+  function autoFitElement(config) {
+    const el = document.getElementById(config.id);
+    if (!el) return;
+
+    // Start at ideal size
+    let size = config.ideal;
+    el.style.fontSize = size + 'px';
+
+    // Measure: does the text fit within the constraints?
+    // We check both width overflow and line count
+    const lineHeight = parseFloat(getComputedStyle(el).lineHeight) || size * 1.2;
+
+    while (size > config.min) {
+      el.style.fontSize = size + 'px';
+      const lh = parseFloat(getComputedStyle(el).lineHeight) || size * 1.2;
+      const lines = Math.ceil(el.scrollHeight / lh);
+      const fitsWidth = el.scrollWidth <= config.maxWidth;
+      const fitsLines = lines <= config.maxLines;
+
+      if (fitsWidth && fitsLines) break;
+      size -= 1;
+    }
+
+    el.style.fontSize = size + 'px';
+    return size;
+  }
+
+  function autoFitTemplate(templateName) {
+    const config = autoFitConfig[templateName] || bannerFitConfig[templateName];
+    if (!config) return;
+    config.elements.forEach(autoFitElement);
+  }
+
+  // Debounce helper for smooth typing
+  let fitTimer = null;
+  function debouncedAutoFit(templateName) {
+    clearTimeout(fitTimer);
+    fitTimer = setTimeout(() => autoFitTemplate(templateName), 50);
+  }
+
+  /* ==========================================
+     CORE FUNCTIONS
+     ========================================== */
+
   function updateLogoSize(graphicId, value) {
     const el = document.querySelector('#' + graphicId + ' .logo-pinned') ||
                document.querySelector('#' + graphicId + ' .banner-wordmark');
     if (el) el.style.height = value + 'px';
   }
 
-    function updateElementSize(id, v) {
+  function updateElementSize(id, v) {
     const el = document.getElementById(id);
     if (el) el.style.fontSize = v + 'px';
   }
 
-    const templates = ['hero', 'feature', 'stat', 'quote', 'comparison', 'terminal', 'banner-tw', 'banner-li', 'banner-wb', 'profile', 'trust', 'ph'];
+  const templates = ['hero', 'feature', 'stat', 'quote', 'comparison', 'terminal', 'banner-tw', 'banner-li', 'banner-wb', 'profile', 'trust', 'ph'];
   let currentTemplate = 'hero';
 
   function showTemplate(name) {
@@ -1740,6 +1889,8 @@
       btn.classList.remove('active');
     });
     event.target.classList.add('active');
+    // Auto-fit after template switch
+    requestAnimationFrame(() => autoFitTemplate(name));
   }
 
   // Update both banner variants simultaneously so content stays in sync
@@ -1753,6 +1904,8 @@
         el.textContent = value;
       }
     });
+    // Auto-fit all visible banners
+    ['banner-tw', 'banner-li', 'banner-wb'].forEach(b => debouncedAutoFit(b));
   }
 
   function updateField(id, value) {
@@ -1771,6 +1924,8 @@
     } else {
       el.textContent = value;
     }
+    // Auto-fit after content change
+    debouncedAutoFit(currentTemplate);
   }
 
   function getActiveGraphic() {
@@ -1826,6 +1981,12 @@
     btn.textContent = 'Downloaded!';
     setTimeout(() => { btn.textContent = 'Download PNG'; }, 2000);
   }
+
+  // Auto-fit on page load
+  window.addEventListener('load', () => {
+    // Small delay to let fonts load
+    setTimeout(() => autoFitTemplate('hero'), 200);
+  });
 </script>
 
 </body>

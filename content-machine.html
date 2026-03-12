@@ -6,7 +6,7 @@
 <title>Clawoop -- Content Machine</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap');
 
 :root {
   --bg: #09090b;
@@ -599,14 +599,18 @@ body {
 
 #preview-headline {
   font-size: 74px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.08;
   color: #fafafa;
-  letter-spacing: -0.025em;
   max-width: 900px;
   margin-bottom: 32px;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Instrument Serif', Georgia, serif;
   word-break: break-word;
+}
+
+#preview-headline em {
+  font-style: italic;
+  color: #bdd8f1;
 }
 
 #preview-subline {
@@ -818,8 +822,8 @@ body {
     </div>
     <div class="drw-body">
       <div class="drw-field">
-        <label>Headline</label>
-        <input type="text" id="gfx-headline" placeholder="Main message..." maxlength="60" oninput="updatePreview()">
+        <label>Headline (use &lt;em&gt; for accent italic)</label>
+        <input type="text" id="gfx-headline" placeholder="AI that acts is <em>hard.</em>" maxlength="120" oninput="updatePreview()">
       </div>
       <div class="drw-field">
         <label>Subline (optional)</label>
@@ -2156,6 +2160,35 @@ LAUNCH_WEEK.forEach(lw => {
   });
 });
 
+// ===== CLOUD SYNC =====
+const CLOUD_API = 'https://clawoop-state.alejoescriva.workers.dev';
+const CLOUD_PAGE = 'content-machine';
+let _cmSaveTimer = null;
+
+function cloudSaveCM() {
+  clearTimeout(_cmSaveTimer);
+  _cmSaveTimer = setTimeout(async () => {
+    try { await fetch(`${CLOUD_API}/${CLOUD_PAGE}`, { method: 'PUT', body: JSON.stringify(S) }); } catch {}
+  }, 500);
+}
+
+async function initCloudSyncCM() {
+  try {
+    const res = await fetch(`${CLOUD_API}/${CLOUD_PAGE}`);
+    if (res.ok) {
+      const cloud = await res.json();
+      if (cloud.posted && cloud.posted.length) {
+        const local = S.posted || [];
+        // Merge: union of posted IDs
+        const merged = [...new Set([...local, ...cloud.posted])];
+        S.posted = merged;
+        saveS();
+        render();
+      }
+    }
+  } catch {}
+}
+
 // ===== STATE =====
 const SK = 'clawoop-cm-v2';
 let currentMode = 'bank';
@@ -2175,6 +2208,7 @@ function loadS() {
 
 function saveS() {
   try { localStorage.setItem(SK, JSON.stringify(S)); } catch(e) {}
+  cloudSaveCM();
 }
 
 // ===== TODAY'S PICKS =====
@@ -2395,22 +2429,50 @@ function handleOverlayClick(e) {
 }
 
 function updatePreview() {
-  document.getElementById('preview-headline').textContent = document.getElementById('gfx-headline').value;
-  document.getElementById('preview-subline').textContent = document.getElementById('gfx-subline').value;
+  const headlineEl = document.getElementById('preview-headline');
+  const sublineEl = document.getElementById('preview-subline');
+  const headlineVal = document.getElementById('gfx-headline').value;
+  const sublineVal = document.getElementById('gfx-subline').value;
+
+  // Support <em> tags and <br> in headline for the heading formula
+  headlineEl.innerHTML = headlineVal.replace(/\n/g, '<br>');
+  sublineEl.textContent = sublineVal;
+
+  // Auto-fit headline
+  autoFitGfxText(headlineEl, 74, 32, 900, 3);
+  // Auto-fit subline
+  autoFitGfxText(sublineEl, 30, 16, 720, 2);
+}
+
+function autoFitGfxText(el, idealSize, minSize, maxWidth, maxLines) {
+  let size = idealSize;
+  el.style.fontSize = size + 'px';
+  while (size > minSize) {
+    el.style.fontSize = size + 'px';
+    const lh = parseFloat(getComputedStyle(el).lineHeight) || size * 1.2;
+    const lines = Math.ceil(el.scrollHeight / lh);
+    if (el.scrollWidth <= maxWidth && lines <= maxLines) break;
+    size -= 1;
+  }
+  el.style.fontSize = size + 'px';
 }
 
 async function captureGfxCanvas() {
   const el = document.getElementById('gfx-canvas');
   const scaleEl = el.closest('.gfx-preview-scale');
-  const savedTransform = scaleEl ? scaleEl.style.transform : null;
+  const clipEl = el.closest('.gfx-preview-clip');
+  // Remove scaling and clipping for full-res capture
   if (scaleEl) scaleEl.style.transform = 'none';
+  if (clipEl) { clipEl.style.width = '1080px'; clipEl.style.height = '1080px'; }
   const canvas = await html2canvas(el, {
     scale: 1,
     useCORS: true,
     allowTaint: true,
     backgroundColor: '#09090b'
   });
-  if (scaleEl && savedTransform !== null) scaleEl.style.transform = savedTransform;
+  // Restore
+  if (scaleEl) scaleEl.style.transform = '';
+  if (clipEl) { clipEl.style.width = ''; clipEl.style.height = ''; }
   return canvas;
 }
 
@@ -2572,6 +2634,7 @@ function init() {
 }
 
 init();
+initCloudSyncCM();
 </script>
 </body>
 </html>
