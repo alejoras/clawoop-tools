@@ -96,6 +96,24 @@ body {
   color: var(--muted-l);
 }
 
+.sb-date-input {
+  width: 100%;
+  padding: 6px 8px;
+  border: 1px solid var(--border-l);
+  border-radius: 6px;
+  background: var(--s3);
+  color: var(--fg);
+  font-size: 12px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.sb-date-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.7);
+  cursor: pointer;
+}
+
 .role-row {
   display: flex;
   gap: 5px;
@@ -712,6 +730,11 @@ if(location.hostname.indexOf('github.io')!==-1) document.addEventListener('DOMCo
   <div class="sb-logo">
     <img class="sb-logo-img" data-local-src="../projects/ablo/assets/clawoop-logo.png" data-gh-src="logo.png" src="../projects/ablo/assets/clawoop-logo.png" alt="Clawoop">
     <span class="sb-badge">Content Machine</span>
+  </div>
+
+  <div class="sb-section">
+    <div class="sb-label">Campaign starts</div>
+    <input type="date" id="campaign-start" class="sb-date-input" onchange="setCampaignStart(this.value)">
   </div>
 
   <div class="sb-section">
@@ -2199,7 +2222,7 @@ async function initCloudSyncCM() {
 // ===== STATE =====
 const SK = 'clawoop-cm-v2';
 let currentMode = 'bank';
-let S = { user: null, posted: [], filter: { platform: 'all', pillar: 'all', role: 'all', status: 'all' } };
+let S = { user: null, posted: [], campaignStart: null, filter: { platform: 'all', pillar: 'all', role: 'all', status: 'all' } };
 
 function loadS() {
   try {
@@ -2266,7 +2289,23 @@ function renderAll() {
 }
 
 function renderSidebar() {
-  // Persona buttons
+  // Campaign start date
+  const csInput = document.getElementById('campaign-start');
+  if (csInput && S.campaignStart) csInput.value = S.campaignStart;
+  // Today label with campaign day
+  const todayEl = document.getElementById('today-date');
+  if (todayEl) {
+    const now = new Date();
+    let label = now.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+    if (S.campaignStart) {
+      const start = new Date(S.campaignStart + 'T00:00:00');
+      const diff = Math.floor((now - start) / 86400000);
+      if (diff >= 0) label += ` (Day ${diff + 1})`;
+      else label += ` (${Math.abs(diff)}d until launch)`;
+    }
+    todayEl.textContent = label;
+  }
+  // Role buttons
   document.querySelectorAll('.role-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.r === S.user);
   });
@@ -2349,6 +2388,12 @@ function setRole(role) {
   S.user = S.user === role ? null : role;
   saveS();
   renderAll();
+}
+
+function setCampaignStart(val) {
+  S.campaignStart = val || null;
+  saveS();
+  renderSidebar();
 }
 
 function setFilter(key, val) {
@@ -2631,12 +2676,6 @@ function copyLaunchPost(id) {
 // ===== INIT =====
 function init() {
   loadS();
-
-  // Set today's date
-  const now = new Date();
-  const opts = { weekday: 'long', month: 'long', day: 'numeric' };
-  document.getElementById('today-date').textContent = now.toLocaleDateString('en-US', opts);
-
   renderAll();
 }
 

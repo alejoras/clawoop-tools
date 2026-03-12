@@ -92,6 +92,7 @@ body {
   padding: 12px 20px;
   border-bottom: 1px solid var(--border);
 }
+
 .campaign-start-label {
   font-size: 10px;
   font-weight: 600;
@@ -100,6 +101,7 @@ body {
   color: var(--text-secondary);
   margin-bottom: 6px;
 }
+
 .campaign-start-input {
   width: 100%;
   padding: 6px 8px;
@@ -111,6 +113,7 @@ body {
   font-family: 'Inter', sans-serif;
   cursor: pointer;
 }
+
 .campaign-day-label {
   font-size: 11px;
   color: var(--text-secondary);
@@ -489,32 +492,6 @@ body {
 </head>
 <body>
 
-<!-- Tool Switcher Nav -->
-<nav class="tool-switcher">
-  <a href="index.html" class="ts-link ts-home" title="Home">&#8592;</a>
-  <a href="graphics.html" class="ts-link">Graphics</a>
-  <a href="content-machine.html" class="ts-link">Content</a>
-  <a href="launch-dashboard.html" class="ts-link ts-active">Launch</a>
-</nav>
-<style>
-.tool-switcher {
-  position: fixed; top: 12px; right: 16px; z-index: 9999;
-  display: flex; gap: 2px; align-items: center;
-  background: rgba(255,255,255,0.85); backdrop-filter: blur(12px);
-  border: 1px solid rgba(0,0,0,0.1); border-radius: 8px;
-  padding: 3px; font-family: 'Inter', sans-serif;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-}
-.ts-link {
-  padding: 5px 12px; font-size: 12px; font-weight: 500;
-  color: #888; text-decoration: none; border-radius: 6px;
-  transition: color 0.15s, background 0.15s; white-space: nowrap;
-}
-.ts-link:hover { color: #333; background: rgba(0,0,0,0.05); }
-.ts-link.ts-active { color: #1a1a1a; background: rgba(54,103,166,0.12); }
-.ts-home { font-size: 14px; padding: 5px 8px; }
-</style>
-
 <div class="sidebar">
   <div class="sidebar-header">
     <img src="assets/clawoop-logo.png" alt="Clawoop" style="height:28px;margin-bottom:10px;display:block;" onerror="this.style.display='none'">
@@ -590,7 +567,6 @@ body {
   <div class="timeline-section" id="sidebarTimeline">
     <div class="timeline-label">Launch Timeline</div>
   </div>
-
 
   <div class="sidebar-compact-overview" id="sidebarCompactOverview">
     <div class="sidebar-compact-label">Campaign Progress</div>
