@@ -635,6 +635,7 @@ function cloudSave() {
       roles: loadRoleMappingsLocal(),
       checklist: loadChecklistLocal(),
       mdCheckboxes: getMdCheckboxes(),
+      editedFiles: JSON.parse(localStorage.getItem('clawoop-launch-edited-files') || '{}'),
     };
     try { await fetch(`${CLOUD_API}/${CLOUD_PAGE}`, { method: 'PUT', body: JSON.stringify(state) }); } catch {}
   }, 500);
@@ -663,6 +664,10 @@ async function initCloudSync() {
     for (const [k, v] of Object.entries(cloud.mdCheckboxes)) {
       if (!localStorage.getItem(k)) localStorage.setItem(k, v);
     }
+  }
+  if (cloud.editedFiles && Object.keys(cloud.editedFiles).length) {
+    const local = JSON.parse(localStorage.getItem('clawoop-launch-edited-files') || '{}');
+    if (!Object.keys(local).length) { localStorage.setItem('clawoop-launch-edited-files', JSON.stringify(cloud.editedFiles)); }
   }
   if (currentView === 'today') renderTodayView();
   else if (currentView === 'checklist') renderChecklistView();
@@ -702,6 +707,8 @@ const BUNDLED_FILES = {
 };
 
 async function loadFile(file) {
+  const edited = JSON.parse(localStorage.getItem('clawoop-launch-edited-files') || '{}');
+  if (edited[file] !== undefined) { return edited[file]; }
   if (BUNDLED_FILES[file] !== undefined) { return BUNDLED_FILES[file]; }
   const response = await fetch(file);
   if (!response.ok) throw new Error("File not found");
@@ -1458,8 +1465,10 @@ async function saveFile() {
   if (!textarea) return;
   const content = textarea.value;
   try {
-    const res = await fetch(currentFile, { method: 'PUT', headers: { 'Content-Type': 'text/plain' }, body: content });
-    if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+    const edited = JSON.parse(localStorage.getItem('clawoop-launch-edited-files') || '{}');
+    edited[currentFile] = content;
+    localStorage.setItem('clawoop-launch-edited-files', JSON.stringify(edited));
+    cloudSave();
     rawMarkdown = content;
     hasUnsavedChanges = false;
     unsavedDot.classList.remove('visible');
