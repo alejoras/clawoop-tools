@@ -725,6 +725,43 @@ body {
 if(location.hostname.indexOf('github.io')!==-1) document.addEventListener('DOMContentLoaded',function(){ document.querySelectorAll('[data-gh-src]').forEach(function(img){ img.src=img.getAttribute('data-gh-src'); }); });
 </script>
 
+<nav class="tool-switcher" id="tool-switcher">
+  <a href="#" class="ts-link ts-home" title="Home">&#8592;</a>
+  <a href="#" class="ts-link">Graphics</a>
+  <a href="#" class="ts-link ts-active">Content</a>
+  <a href="#" class="ts-link">Launch</a>
+</nav>
+<script>
+(function(){
+  var gh = location.hostname.indexOf('github.io') !== -1;
+  var paths = [
+    gh ? 'index.html' : '#',
+    gh ? 'graphics.html' : 'clawoop-graphics.html',
+    gh ? 'content-machine.html' : 'clawoop-content-machine.html',
+    gh ? 'launch-dashboard.html' : '../projects/ablo/marketing/03-clawoop-launch_mar11/dashboard.html'
+  ];
+  var links = document.querySelectorAll('#tool-switcher .ts-link');
+  for(var i=0;i<links.length;i++) links[i].href = paths[i];
+})();
+</script>
+<style>
+.tool-switcher {
+  position: fixed; top: 12px; right: 16px; z-index: 9999;
+  display: flex; gap: 2px; align-items: center;
+  background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
+  padding: 3px; font-family: 'Inter', sans-serif;
+}
+.ts-link {
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  color: #888; text-decoration: none; border-radius: 6px;
+  transition: color 0.15s, background 0.15s; white-space: nowrap;
+}
+.ts-link:hover { color: #ccc; background: rgba(255,255,255,0.06); }
+.ts-link.ts-active { color: #fff; background: rgba(54,103,166,0.25); }
+.ts-home { font-size: 14px; padding: 5px 8px; }
+</style>
+
 <!-- Sidebar -->
 <aside id="sidebar">
   <div class="sb-logo">
