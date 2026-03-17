@@ -28,8 +28,15 @@ body {
   background: var(--bg);
   color: var(--text);
   display: flex;
+  flex-direction: column;
   height: 100vh;
   overflow: hidden;
+}
+
+#app-body {
+  display: flex;
+  flex: 1;
+  min-height: 0;
 }
 
 .sidebar {
@@ -513,22 +520,21 @@ body {
 </script>
 <style>
 .tool-switcher {
-  position: fixed; top: 12px; right: 16px; z-index: 9999;
-  display: flex; gap: 2px; align-items: center;
-  background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
-  padding: 3px; font-family: 'Inter', sans-serif;
+  display: flex; gap: 2px; align-items: center; justify-content: center;
+  background: var(--sidebar-bg); border-bottom: 1px solid var(--border);
+  padding: 6px 12px; font-family: 'Inter', sans-serif; flex-shrink: 0;
 }
 .ts-link {
-  padding: 5px 12px; font-size: 12px; font-weight: 500;
-  color: #888; text-decoration: none; border-radius: 6px;
+  padding: 5px 14px; font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none; border-radius: 6px;
   transition: color 0.15s, background 0.15s; white-space: nowrap;
 }
-.ts-link:hover { color: #ccc; background: rgba(255,255,255,0.06); }
-.ts-link.ts-active { color: #fff; background: rgba(54,103,166,0.25); }
-.ts-home { font-size: 14px; padding: 5px 8px; }
+.ts-link:hover { color: var(--text); background: rgba(0,0,0,0.05); }
+.ts-link.ts-active { color: var(--text); background: rgba(0,0,0,0.08); font-weight: 600; }
+.ts-home { font-size: 14px; padding: 5px 10px; }
 </style>
 
+<div id="app-body">
 <div class="sidebar">
   <div class="sidebar-header">
     <img src="assets/clawoop-logo.png" alt="Clawoop" style="height:28px;margin-bottom:10px;display:block;" onerror="this.style.display='none'">
@@ -1732,5 +1738,6 @@ document.getElementById('sidebarCompactOverview')?.addEventListener('click', () 
 // Load cloud state after initial render
 initCloudSync();
 </script>
+</div><!-- /app-body -->
 </body>
 </html>

@@ -35,22 +35,29 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  html, body { height: 100%; }
+  html, body { height: 100%; margin: 0; }
 
   body {
     font-family: var(--font-sans);
     background: var(--surface-0);
     color: var(--foreground);
     display: flex;
+    flex-direction: column;
     height: 100vh;
     overflow: hidden;
+  }
+
+  #app-body {
+    display: flex;
+    flex: 1;
+    min-height: 0;
   }
 
   /* ===== TWO-PANEL LAYOUT (responsive) ===== */
   .panel-left {
     width: clamp(300px, 26vw, 420px);
     min-width: 280px;
-    height: 100vh;
+    height: 100%;
     background: var(--surface-1);
     border-right: 1px solid var(--border);
     display: flex;
@@ -1097,22 +1104,21 @@
 </script>
 <style>
 .tool-switcher {
-  position: fixed; top: 12px; right: 16px; z-index: 9999;
-  display: flex; gap: 2px; align-items: center;
-  background: rgba(15,15,18,0.85); backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08); border-radius: 8px;
-  padding: 3px; font-family: 'Inter', sans-serif;
+  display: flex; gap: 2px; align-items: center; justify-content: center;
+  background: #0a0a0d; border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 6px 12px; font-family: 'Inter', sans-serif; flex-shrink: 0;
 }
 .ts-link {
-  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  padding: 5px 14px; font-size: 12px; font-weight: 500;
   color: #888; text-decoration: none; border-radius: 6px;
   transition: color 0.15s, background 0.15s; white-space: nowrap;
 }
 .ts-link:hover { color: #ccc; background: rgba(255,255,255,0.06); }
 .ts-link.ts-active { color: #fff; background: rgba(54,103,166,0.25); }
-.ts-home { font-size: 14px; padding: 5px 8px; }
+.ts-home { font-size: 14px; padding: 5px 10px; }
 </style>
 
+<div id="app-body">
 <!-- LEFT PANEL: Controls -->
 <div class="panel-left">
 <div class="panel-left-header">
@@ -2157,5 +2163,6 @@
   });
 </script>
 
+</div><!-- /app-body -->
 </body>
 </html>
