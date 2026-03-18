@@ -28,7 +28,31 @@ body {
   background: var(--bg);
   color: var(--text);
   display: flex;
+  flex-direction: column;
   height: 100vh;
+  overflow: hidden;
+}
+
+.tool-nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 36px; flex-shrink: 0;
+  background: #F0EDE8; border-bottom: 1px solid var(--border);
+  padding: 0 16px; font-family: 'Inter', sans-serif;
+}
+.tool-nav-left { display: flex; align-items: center; gap: 8px; }
+.tool-nav-brand { font-size: 12px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px; text-transform: uppercase; }
+.tool-nav-links { display: flex; gap: 2px; }
+.tn-link {
+  padding: 4px 12px; font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); text-decoration: none; border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+.tn-link:hover { color: var(--text); background: rgba(0,0,0,0.06); }
+.tn-link.tn-active { color: var(--text); background: rgba(45,138,110,0.15); }
+
+.app-body {
+  display: flex;
+  flex: 1;
   overflow: hidden;
 }
 
@@ -492,11 +516,35 @@ body {
 </head>
 <body>
 
+<nav class="tool-nav" id="tool-switcher">
+  <div class="tool-nav-left">
+    <span class="tool-nav-brand">Clawoop</span>
+  </div>
+  <div class="tool-nav-links">
+    <a href="#" class="tn-link">Graphics</a>
+    <a href="#" class="tn-link">Content</a>
+    <a href="#" class="tn-link tn-active">Launch</a>
+  </div>
+</nav>
+<script>
+(function(){
+  var gh = location.hostname.indexOf('github.io') !== -1;
+  var paths = [
+    gh ? 'graphics.html' : '/content/clawoop-graphics.html',
+    gh ? 'content-machine.html' : '/content/clawoop-content-machine.html',
+    gh ? 'launch-dashboard.html' : '/projects/ablo/marketing/05-clawoop-launch_mar19/dashboard.html'
+  ];
+  var links = document.querySelectorAll('#tool-switcher .tn-link');
+  for(var i=0;i<links.length;i++) links[i].href = paths[i];
+})();
+</script>
+
+<div class="app-body">
 <div class="sidebar">
   <div class="sidebar-header">
     <img src="assets/clawoop-logo.png" alt="Clawoop" style="height:28px;margin-bottom:10px;display:block;" onerror="this.style.display='none'">
     <h1>Clawoop Launch</h1>
-    <p id="sidebarDateRange">March 11-17, 2026</p>
+    <p id="sidebarDateRange">March 19 - April 1, 2026</p>
     <button class="sidebar-toggle" id="sidebarToggle" title="Collapse sidebar">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" style="width:15px;height:15px"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" /></svg>
     </button>
@@ -1703,5 +1751,6 @@ document.getElementById('sidebarCompactOverview')?.addEventListener('click', () 
 // Load cloud state after initial render
 initCloudSync();
 </script>
+</div><!-- .app-body -->
 </body>
 </html>
