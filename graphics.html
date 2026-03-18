@@ -1097,8 +1097,8 @@
   var gh = location.hostname.indexOf('github.io') !== -1;
   var paths = [
     gh ? 'graphics.html' : '/content/clawoop-graphics.html',
-    gh ? 'content-machine.html' : '/content/clawoop-content-machine-v2.html',
-    gh ? 'launch-dashboard.html' : '/projects/ablo/marketing/04-solopreneur-launch_mar17/dashboard.html'
+    gh ? 'content-machine.html' : '/content/clawoop-content-machine.html',
+    gh ? 'launch-dashboard.html' : '/projects/ablo/marketing/05-clawoop-launch_mar19/dashboard.html'
   ];
   var links = document.querySelectorAll('#tool-switcher .tn-link');
   for(var i=0;i<links.length;i++) links[i].href = paths[i];
