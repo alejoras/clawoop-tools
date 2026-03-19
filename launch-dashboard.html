@@ -1525,14 +1525,14 @@ async function saveFile() {
   if (!textarea) return;
   const content = textarea.value;
   try {
-    const res = await fetch(currentFile, { method: 'PUT', headers: { 'Content-Type': 'text/plain' }, body: content });
-    if (!res.ok) throw new Error(`Save failed: ${res.status}`);
+    saveMdEdit(currentFile, content);
     rawMarkdown = content;
     hasUnsavedChanges = false;
     unsavedDot.classList.remove('visible');
     saveIndicator.textContent = 'Saved';
     saveIndicator.classList.add('visible');
     setTimeout(() => saveIndicator.classList.remove('visible'), 2000);
+    cloudSave();
   } catch (err) {
     saveIndicator.textContent = 'Save failed';
     saveIndicator.classList.add('visible');
